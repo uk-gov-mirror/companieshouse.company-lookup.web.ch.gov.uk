@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/baseLayout}">
+
+<head>
+  <title>What is the company number??</title>
+</head>
+<body>
+<div id="lookup-main-content" layout:fragment="content">
+
+  <form id="lookup-form" th:action="@{''}" th:object="${companyProfile}" class="form" method="post">
+
+    <div class="govuk-grid-row">
+
+      <div class="govuk-grid-column-two-thirds">
+
+        <fieldset class="govuk-fieldset">
+
+          <dl class="app-check-your-answers app-check-your-answers--short">
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Company name
+              </dt>
+              <dd class="app-check-your-answers__answer"  id="companyProfile-companyName"
+                   th:utext="*{#strings.replace(companyName,'&#10;','&lt;br&gt;')}">
+              </dd>
+            </div>
+
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Company number
+              </dt>
+              <dd class="app-check-your-answers__answer" id="companyProfile-companyNumber"
+                   th:utext="*{#strings.replace(companyNumber,'&#10;','&lt;br&gt;')}">
+              </dd>
+            </div>
+
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Registered office address
+              </dt>
+              <dd class="app-check-your-answers__answer" id="companyProfile-registeredOfficeAddress"
+                   th:utext="*{#strings.replace(registeredOfficeAddress.addressLine1+', '+registeredOfficeAddress.addressLine2+', '+registeredOfficeAddress.postalCode,'&#10;','&lt;br&gt;')}">
+              </dd>
+            </div>
+
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Next accounts made up to
+              </dt>
+              <dd class="app-check-your-answers__answer" id="companyProfile-accounts-nextMadeUpTo"
+                   th:utext="*{#strings.replace(accounts?.nextMadeUpTo,'&#10;','&lt;br&gt;')}">
+              </dd>
+            </div>
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Last accounts made up to
+              </dt>
+              <dd class="app-check-your-answers__answer" id="companyProfile-accounts-lastAccounts-nextMadeUpTo"
+                   th:utext="*{#strings.replace(accounts?.lastAccounts?.madeUpTo,'&#10;','&lt;br&gt;')}">
+              </dd>
+            </div>
+          </dl>
+        </fieldset>
+        <input id="next-button" class="govuk-button" type="submit" role="button" value="Continue"/>
+
+      </div>
+    </div>
+  </form>
+
+</div>
+</body>
+</html>
