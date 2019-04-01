@@ -10,7 +10,7 @@
 <body>
 <div id="lookup-main-content" layout:fragment="content">
 
-  <form id="lookup-form" th:action="@{''}" th:object="${companyProfile}" class="form" method="post">
+  <form id="lookup-form" th:action="@{''}" th:object="${companyConfirmation}" class="form" method="post">
 
     <div class="govuk-grid-row">
 
@@ -23,44 +23,49 @@
               <dt class="app-check-your-answers__question">
                 Company name
               </dt>
-              <dd class="app-check-your-answers__answer"  id="companyProfile-companyName"
+              <dd class="app-check-your-answers__answer"  id="companyConfirmation-companyName"
                    th:utext="*{#strings.replace(companyName,'&#10;','&lt;br&gt;')}">
               </dd>
+              <input th:field="*{companyName}" type="hidden">
             </div>
 
             <div class="app-check-your-answers__contents">
               <dt class="app-check-your-answers__question">
                 Company number
               </dt>
-              <dd class="app-check-your-answers__answer" id="companyProfile-companyNumber"
+              <dd class="app-check-your-answers__answer" id="companyConfirmation-companyNumber"
                    th:utext="*{#strings.replace(companyNumber,'&#10;','&lt;br&gt;')}">
               </dd>
+              <input th:field="*{companyNumber}" type="hidden">
             </div>
 
             <div class="app-check-your-answers__contents">
               <dt class="app-check-your-answers__question">
                 Registered office address
               </dt>
-              <dd class="app-check-your-answers__answer" id="companyProfile-registeredOfficeAddress"
-                   th:utext="*{#strings.replace(registeredOfficeAddress.addressLine1+', '+registeredOfficeAddress.addressLine2+', '+registeredOfficeAddress.postalCode,'&#10;','&lt;br&gt;')}">
+              <dd class="app-check-your-answers__answer" id="companyConfirmation-registeredOfficeAddress"
+                   th:utext="*{#strings.replace(registeredOfficeAddress,'&#10;','&lt;br&gt;')}">
               </dd>
+              <input th:field="*{registeredOfficeAddress}" type="hidden">
             </div>
 
             <div class="app-check-your-answers__contents">
               <dt class="app-check-your-answers__question">
                 Next accounts made up to
               </dt>
-              <dd class="app-check-your-answers__answer" id="companyProfile-accounts-nextMadeUpTo"
-                   th:utext="*{#strings.replace(accounts?.nextMadeUpTo,'&#10;','&lt;br&gt;')}">
+              <dd class="app-check-your-answers__answer" id="companyConfirmation-accountsNextMadeUpTo"
+                   th:utext="*{#strings.replace(accountsNextMadeUpTo,'&#10;','&lt;br&gt;')}">
               </dd>
+              <input th:field="*{accountsNextMadeUpTo}" type="hidden">
             </div>
             <div class="app-check-your-answers__contents">
               <dt class="app-check-your-answers__question">
                 Last accounts made up to
               </dt>
-              <dd class="app-check-your-answers__answer" id="companyProfile-accounts-lastAccounts-nextMadeUpTo"
-                   th:utext="*{#strings.replace(accounts?.lastAccounts?.madeUpTo,'&#10;','&lt;br&gt;')}">
+              <dd class="app-check-your-answers__answer" id="companyConfirmation-lastAccountsNextMadeUpTo"
+                   th:utext="*{#strings.replace(lastAccountsNextMadeUpTo,'&#10;','&lt;br&gt;')}">
               </dd>
+              <input th:field="*{lastAccountsNextMadeUpTo}" type="hidden">
             </div>
           </dl>
         </fieldset>

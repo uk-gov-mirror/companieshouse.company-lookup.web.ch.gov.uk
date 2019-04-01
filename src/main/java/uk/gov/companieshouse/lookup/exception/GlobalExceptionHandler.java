@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(Application.APPLICATION_NAME_SPACE);
 
-    @ExceptionHandler(value = { RuntimeException.class })
+    @ExceptionHandler(value = {RuntimeException.class})
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleRuntimeException(HttpServletRequest request, Exception ex) {
 
@@ -23,10 +23,9 @@ public class GlobalExceptionHandler {
         return "error";
     }
 
-    @ExceptionHandler(value = { URIValidationException.class })
+    @ExceptionHandler(value = {URIValidationException.class})
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleServiceException(HttpServletRequest request, Exception ex) {
-
 
         LOG.errorRequest(request, ex.getMessage(), ex);
         return "error";

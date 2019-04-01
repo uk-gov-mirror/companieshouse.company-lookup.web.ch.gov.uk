@@ -9,6 +9,8 @@ import uk.gov.companieshouse.api.ApiClient;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
 import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
+import uk.gov.companieshouse.api.model.company.RegisteredOfficeAddressApi;
+import uk.gov.companieshouse.lookup.model.CompanyConfirmation;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
 import uk.gov.companieshouse.lookup.validation.ValidationError;
@@ -21,13 +23,14 @@ public class CompanyLookupServiceImpl implements CompanyLookupService {
         new UriTemplate("/company/{companyNumber}");
 
     @Override
-    public CompanyProfileApi getCompanyProfile(String companyNumber)
+    public CompanyConfirmation getCompanyProfile(String companyNumber)
         throws ApiErrorResponseException, URIValidationException {
 
         ApiClient apiClient = ApiSdkManager.getSDK();
         String uri = GET_COMPANY_URI.expand(companyNumber).toString();
-        return  apiClient.company().get(uri).execute();
+        CompanyProfileApi companyProfileApi = apiClient.company().get(uri).execute();
 
+        return mapCompany(companyProfileApi);
     }
 
     @Override
@@ -44,5 +47,23 @@ public class CompanyLookupServiceImpl implements CompanyLookupService {
         }
 
         return validationErrors;
+    }
+
+    private CompanyConfirmation mapCompany(CompanyProfileApi companyProfileApi) {
+
+        CompanyConfirmation companyConfirmation = new CompanyConfirmation();
+        RegisteredOfficeAddressApi registeredOfficeAddress = companyProfileApi
+            .getRegisteredOfficeAddress();
+
+        companyConfirmation.setCompanyName(companyProfileApi.getCompanyName());
+        companyConfirmation.setCompanyNumber(companyProfileApi.getCompanyNumber());
+        companyConfirmation.setRegisteredOfficeAddress(
+            registeredOfficeAddress.getAddressLine1() + ", " + registeredOfficeAddress
+                .getAddressLine2() + ", " + registeredOfficeAddress.getPostalCode());
+        companyConfirmation
+            .setAccountsNextMadeUpTo(companyProfileApi.getAccounts().getNextMadeUpTo());
+        companyConfirmation.setLastAccountsNextMadeUpTo(
+            companyProfileApi.getAccounts().getLastAccounts().getMadeUpTo());
+        return companyConfirmation;
     }
 }

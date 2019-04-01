@@ -10,18 +10,6 @@ import org.springframework.validation.BindingResult;
 @Component
 public class ValidationHandler {
 
-    public void bindValidationErrors(BindingResult bindingResult, List<ValidationError> errors) {
-        errors.sort(Comparator.comparing(ValidationError::getFieldPath)
-            .thenComparing(ValidationError::getMessageKey));
-
-        errors.forEach(error ->
-            bindingResult.rejectValue(error.getFieldPath(),
-                error.getMessageKey(),
-                getValidationArgs(error.getMessageArguments()),
-                null)
-        );
-    }
-
     private static Object[] getValidationArgs(Map<String, String> errorArgs) {
 
         if (errorArgs == null) {
@@ -36,5 +24,17 @@ public class ValidationHandler {
         } else {
             return errorArgs.values().toArray();
         }
+    }
+
+    public void bindValidationErrors(BindingResult bindingResult, List<ValidationError> errors) {
+        errors.sort(Comparator.comparing(ValidationError::getFieldPath)
+            .thenComparing(ValidationError::getMessageKey));
+
+        errors.forEach(error ->
+            bindingResult.rejectValue(error.getFieldPath(),
+                error.getMessageKey(),
+                getValidationArgs(error.getMessageArguments()),
+                null)
+        );
     }
 }

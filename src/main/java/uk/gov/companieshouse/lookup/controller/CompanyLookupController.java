@@ -2,7 +2,6 @@ package uk.gov.companieshouse.lookup.controller;
 
 
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,22 +12,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UriTemplate;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
-import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
+import uk.gov.companieshouse.lookup.model.CompanyConfirmation;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
 import uk.gov.companieshouse.lookup.validation.ValidationError;
 import uk.gov.companieshouse.lookup.validation.ValidationHandler;
 
 @Controller
-@RequestMapping("/accounts/lookup")
+@RequestMapping("/company-lookup/search")
 public class CompanyLookupController {
 
-    private static final UriTemplate FOUND_REDIRECT = new UriTemplate("/accounts/confirmation");
+    private static final UriTemplate FOUND_REDIRECT = new UriTemplate(
+        "/company-lookup/{companyNumber}/confirmation");
     private static final String COMPANY_LOOKUP = "lookup/companyLookup";
 
     @Autowired
@@ -38,18 +39,17 @@ public class CompanyLookupController {
     private ValidationHandler validationHandler;
 
     @GetMapping
-    public String getCompanyLookup(Model model, HttpServletRequest request) {
-
-        model.addAttribute("companyLookup", new CompanyLookup());
-        model.addAttribute("backButton", "/nowhere");
+    public String getCompanyLookup(@RequestParam("forward") String forward, Model model) {
+        CompanyLookup companyLookup = new CompanyLookup();
+        model.addAttribute("companyLookup", companyLookup);
         return COMPANY_LOOKUP;
     }
 
     @PostMapping
-    public String postCompanyLookup(
+    public String postCompanyLookup(@RequestParam("forward") String forward,
         @ModelAttribute("companyLookup") @Valid CompanyLookup companyLookup,
-        BindingResult bindingResult, Model model, HttpServletRequest request,
-        RedirectAttributes attributes) throws URIValidationException, ApiErrorResponseException {
+        BindingResult bindingResult, RedirectAttributes attributes) throws URIValidationException,
+        ApiErrorResponseException {
 
         List<ValidationError> validationErrors = companyLookupService
             .validateCompanyLookup(companyLookup);
@@ -59,11 +59,13 @@ public class CompanyLookupController {
         }
 
         try {
-            CompanyProfileApi companyProfile = companyLookupService
+            CompanyConfirmation companyConfirmation = companyLookupService
                 .getCompanyProfile(companyLookup.getCompanyNumber());
-            attributes.addFlashAttribute("companyProfile", companyProfile);
+            attributes.addAttribute("forward", forward);
+            attributes.addFlashAttribute("companyConfirmation", companyConfirmation);
+
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX +
-                FOUND_REDIRECT.expand("").toString();
+                FOUND_REDIRECT.expand(companyLookup.getCompanyNumber()).toString();
 
         } catch (ApiErrorResponseException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND.value()) {
