@@ -2,6 +2,7 @@ package uk.gov.companieshouse.lookup.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import uk.gov.companieshouse.api.handler.exception.URIValidationException;
 import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
 import uk.gov.companieshouse.api.model.company.RegisteredOfficeAddressApi;
 import uk.gov.companieshouse.api.model.company.account.CompanyAccountApi;
+import uk.gov.companieshouse.api.model.company.account.LastAccountsApi;
 import uk.gov.companieshouse.lookup.exception.ServiceException;
 import uk.gov.companieshouse.lookup.model.CompanyConfirmation;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
@@ -69,21 +71,31 @@ public class CompanyLookupServiceImpl implements CompanyLookupService {
         CompanyConfirmation companyConfirmation = new CompanyConfirmation();
         RegisteredOfficeAddressApi registeredOfficeAddress = companyProfileApi
             .getRegisteredOfficeAddress();
-        CompanyAccountApi companyAccountApi = companyProfileApi.getAccounts();
 
         companyConfirmation.setCompanyName(companyProfileApi.getCompanyName());
         companyConfirmation.setCompanyNumber(companyProfileApi.getCompanyNumber());
+
         if (registeredOfficeAddress != null) {
+
             companyConfirmation.setRegisteredOfficeAddress(
-                registeredOfficeAddress.getAddressLine1() + ", " + registeredOfficeAddress
-                    .getAddressLine2() + ", " + registeredOfficeAddress.getPostalCode());
+                ((registeredOfficeAddress.getAddressLine1() != null)?registeredOfficeAddress.getAddressLine1():"")+
+                ((registeredOfficeAddress.getAddressLine2() != null)?", "+registeredOfficeAddress.getAddressLine2():"")+
+                ((registeredOfficeAddress.getPostalCode() != null)?", "+registeredOfficeAddress.getPostalCode():"")+".");
         }
-        if (companyAccountApi != null) {
-            companyConfirmation
-                .setAccountsNextMadeUpTo(companyAccountApi.getNextMadeUpTo());
-            companyConfirmation.setLastAccountsNextMadeUpTo(
-                companyProfileApi.getAccounts().getLastAccounts().getMadeUpTo());
-        }
+
+        companyConfirmation
+            .setAccountsNextMadeUpTo(Optional.of(companyProfileApi)
+                .map(CompanyProfileApi::getAccounts)
+                .map(CompanyAccountApi::getNextMadeUpTo)
+                .orElse(null));
+
+        companyConfirmation.setLastAccountsNextMadeUpTo(Optional.of(companyProfileApi)
+            .map(CompanyProfileApi::getAccounts)
+            .map(CompanyAccountApi::getLastAccounts)
+            .map(LastAccountsApi::getMadeUpTo)
+            .orElse(null));
+
         return companyConfirmation;
+
     }
 }
