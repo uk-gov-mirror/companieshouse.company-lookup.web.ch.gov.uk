@@ -4,7 +4,6 @@ package uk.gov.companieshouse.lookup.controller;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,8 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UriTemplate;
-import uk.gov.companieshouse.api.error.ApiErrorResponseException;
-import uk.gov.companieshouse.api.handler.exception.URIValidationException;
+import uk.gov.companieshouse.lookup.exception.ServiceException;
 import uk.gov.companieshouse.lookup.model.CompanyConfirmation;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
@@ -48,8 +46,7 @@ public class CompanyLookupController {
     @PostMapping
     public String postCompanyLookup(@RequestParam("forward") String forward,
         @ModelAttribute("companyLookup") @Valid CompanyLookup companyLookup,
-        BindingResult bindingResult, RedirectAttributes attributes) throws URIValidationException,
-        ApiErrorResponseException {
+        BindingResult bindingResult, RedirectAttributes attributes) throws ServiceException {
 
         List<ValidationError> validationErrors = companyLookupService
             .validateCompanyLookup(companyLookup);
@@ -58,24 +55,22 @@ public class CompanyLookupController {
             return COMPANY_LOOKUP;
         }
 
-        try {
-            CompanyConfirmation companyConfirmation = companyLookupService
-                .getCompanyProfile(companyLookup.getCompanyNumber());
-            attributes.addAttribute("forward", forward);
-            attributes.addFlashAttribute("companyConfirmation", companyConfirmation);
+        CompanyConfirmation companyConfirmation = companyLookupService
+            .getCompanyProfile(companyLookup.getCompanyNumber());
 
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX +
-                FOUND_REDIRECT.expand(companyLookup.getCompanyNumber()).toString();
-
-        } catch (ApiErrorResponseException e) {
-            if (e.getStatusCode() == HttpStatus.NOT_FOUND.value()) {
-                ValidationError error = new ValidationError();
-                error.setMessageKey("company.not.found");
-                validationErrors.add(error);
-                validationHandler.bindValidationErrors(bindingResult, validationErrors);
-                return COMPANY_LOOKUP;
-            }
-            throw e;
+        if (companyConfirmation == null) {
+            ValidationError error = new ValidationError();
+            error.setMessageKey("company.not.found");
+            validationErrors.add(error);
+            validationHandler.bindValidationErrors(bindingResult, validationErrors);
+            return COMPANY_LOOKUP;
         }
+
+        attributes.addAttribute("forward", forward);
+        attributes.addFlashAttribute("companyConfirmation", companyConfirmation);
+
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX +
+            FOUND_REDIRECT.expand(companyLookup.getCompanyNumber()).toString();
+
     }
 }
