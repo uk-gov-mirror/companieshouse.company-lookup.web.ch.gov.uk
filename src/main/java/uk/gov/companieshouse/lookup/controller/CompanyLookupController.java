@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UriTemplate;
 import uk.gov.companieshouse.lookup.exception.ServiceException;
-import uk.gov.companieshouse.lookup.model.CompanyConfirmation;
+import uk.gov.companieshouse.lookup.model.CompanyDetail;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
 import uk.gov.companieshouse.lookup.validation.ValidationError;
@@ -27,7 +27,7 @@ import uk.gov.companieshouse.lookup.validation.ValidationHandler;
 public class CompanyLookupController {
 
     private static final UriTemplate FOUND_REDIRECT = new UriTemplate(
-        "/company-lookup/{companyNumber}/confirmation");
+        "/company-lookup/{companyNumber}/detail");
     private static final String COMPANY_LOOKUP = "lookup/companyLookup";
 
     @Autowired
@@ -55,10 +55,10 @@ public class CompanyLookupController {
             return COMPANY_LOOKUP;
         }
 
-        CompanyConfirmation companyConfirmation = companyLookupService
+        CompanyDetail companyDetail = companyLookupService
             .getCompanyProfile(companyLookup.getCompanyNumber());
 
-        if (companyConfirmation == null) {
+        if (companyDetail == null) {
             ValidationError error = new ValidationError();
             error.setMessageKey("company.not.found");
             validationErrors.add(error);
@@ -67,7 +67,7 @@ public class CompanyLookupController {
         }
 
         attributes.addAttribute("forward", forward);
-        attributes.addFlashAttribute("companyConfirmation", companyConfirmation);
+        attributes.addFlashAttribute("companyDetail", companyDetail);
 
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX +
             FOUND_REDIRECT.expand(companyLookup.getCompanyNumber()).toString();

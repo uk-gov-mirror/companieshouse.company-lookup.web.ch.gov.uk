@@ -1,13 +1,11 @@
 package uk.gov.companieshouse.lookup.controller;
 
-import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
-import uk.gov.companieshouse.lookup.model.CompanyConfirmation;
+import uk.gov.companieshouse.lookup.model.CompanyDetail;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
 import uk.gov.companieshouse.lookup.validation.ValidationError;
@@ -42,7 +40,7 @@ public class CompanyLookupControllerTest {
     private ValidationHandler validationHandler;
 
     @Mock
-    private CompanyConfirmation companyConfirmation;
+    private CompanyDetail companyDetail;
 
     @Mock
     private CompanyLookup companyLookup;
@@ -73,7 +71,7 @@ public class CompanyLookupControllerTest {
 
     @Test
     public void postCompanyLookup() throws Exception {
-        when(companyLookupService.getCompanyProfile(anyString())).thenReturn(companyConfirmation);
+        when(companyLookupService.getCompanyProfile(anyString())).thenReturn(companyDetail);
         when(companyLookup.getCompanyNumber()).thenReturn("123");
         this.mockMvc.perform(post("/company-lookup/search?forward={forward}", "forwardURL")
             .flashAttr("companyLookup", companyLookup)).andDo(print())

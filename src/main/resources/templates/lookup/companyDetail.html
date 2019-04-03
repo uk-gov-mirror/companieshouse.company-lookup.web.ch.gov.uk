@@ -10,7 +10,7 @@
 <body>
 <div id="lookup-main-content" layout:fragment="content">
 
-  <form id="lookup-form" th:action="@{''}" th:object="${companyConfirmation}" class="form" method="post">
+  <form id="lookup-form" th:action="@{''}" th:object="${companyDetail}" class="form" method="post">
 
     <div class="govuk-grid-row">
 
@@ -23,7 +23,7 @@
               <dt class="app-check-your-answers__question">
                 Company name
               </dt>
-              <dd class="app-check-your-answers__answer"  id="companyConfirmation-companyName"
+              <dd class="app-check-your-answers__answer"  id="companyDetail-companyName"
                    th:utext="*{#strings.replace(companyName,'&#10;','&lt;br&gt;')}">
               </dd>
               <input th:field="*{companyName}" type="hidden">
@@ -33,7 +33,7 @@
               <dt class="app-check-your-answers__question">
                 Company number
               </dt>
-              <dd class="app-check-your-answers__answer" id="companyConfirmation-companyNumber"
+              <dd class="app-check-your-answers__answer" id="companyDetail-companyNumber"
                    th:utext="*{#strings.replace(companyNumber,'&#10;','&lt;br&gt;')}">
               </dd>
               <input th:field="*{companyNumber}" type="hidden">
@@ -43,7 +43,7 @@
               <dt class="app-check-your-answers__question">
                 Registered office address
               </dt>
-              <dd class="app-check-your-answers__answer" id="companyConfirmation-registeredOfficeAddress"
+              <dd class="app-check-your-answers__answer" id="companyDetail-registeredOfficeAddress"
                    th:utext="*{#strings.replace(registeredOfficeAddress,'&#10;','&lt;br&gt;')}">
               </dd>
               <input th:field="*{registeredOfficeAddress}" type="hidden">
@@ -53,7 +53,7 @@
               <dt class="app-check-your-answers__question">
                 Next accounts made up to
               </dt>
-              <dd class="app-check-your-answers__answer" id="companyConfirmation-accountsNextMadeUpTo"
+              <dd class="app-check-your-answers__answer" id="companyDetail-accountsNextMadeUpTo"
                    th:utext="*{#strings.replace(accountsNextMadeUpTo,'&#10;','&lt;br&gt;')}">
               </dd>
               <input th:field="*{accountsNextMadeUpTo}" type="hidden">
@@ -62,7 +62,7 @@
               <dt class="app-check-your-answers__question">
                 Last accounts made up to
               </dt>
-              <dd class="app-check-your-answers__answer" id="companyConfirmation-lastAccountsNextMadeUpTo"
+              <dd class="app-check-your-answers__answer" id="companyDetail-lastAccountsNextMadeUpTo"
                    th:utext="*{#strings.replace(lastAccountsNextMadeUpTo,'&#10;','&lt;br&gt;')}">
               </dd>
               <input th:field="*{lastAccountsNextMadeUpTo}" type="hidden">

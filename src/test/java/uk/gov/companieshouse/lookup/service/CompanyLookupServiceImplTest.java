@@ -19,7 +19,7 @@ import uk.gov.companieshouse.api.handler.company.request.CompanyGet;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
 import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
 import uk.gov.companieshouse.lookup.exception.ServiceException;
-import uk.gov.companieshouse.lookup.model.CompanyConfirmation;
+import uk.gov.companieshouse.lookup.model.CompanyDetail;
 import uk.gov.companieshouse.lookup.service.impl.ApiClientServiceImpl;
 import uk.gov.companieshouse.lookup.service.impl.CompanyLookupServiceImpl;
 
@@ -60,9 +60,9 @@ import uk.gov.companieshouse.lookup.service.impl.CompanyLookupServiceImpl;
 
             when(companyGet.execute()).thenReturn(new CompanyProfileApi());
 
-            CompanyConfirmation companyConfirmation = companyService.getCompanyProfile(COMPANY_NUMBER);
+            CompanyDetail companyDetail = companyService.getCompanyProfile(COMPANY_NUMBER);
 
-            assertNotNull(companyConfirmation);
+            assertNotNull(companyDetail);
         }
 
         @Test

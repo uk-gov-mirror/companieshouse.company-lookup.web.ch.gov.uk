@@ -17,27 +17,27 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import uk.gov.companieshouse.lookup.model.CompanyConfirmation;
+import uk.gov.companieshouse.lookup.model.CompanyDetail;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class CompanyConfirmationControllerTest {
+public class CompanyDetailControllerTest {
 
-    private static final String COMPANY_LOOKUP_URL = "/company-lookup/{companyNumber}/confirmation?forward={forward}";
+    private static final String COMPANY_LOOKUP_URL = "/company-lookup/{companyNumber}/detail?forward={forward}";
     private static final String FORWARD_URL = "/test/{companyNumber}/test";
     private static final String ACCOUNT_NUMBER = "01234567";
 
     private MockMvc mockMvc;
 
     @Mock
-    private CompanyConfirmation companyConfirmation;
+    private CompanyDetail companyDetail;
 
     @InjectMocks
-    private CompanyConfirmationController companyConfirmationController;
+    private CompanyDetailController companyDetailController;
 
     @BeforeEach
     void setUpBeforeEAch() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(companyConfirmationController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(companyDetailController).build();
     }
 
     @Test
@@ -49,9 +49,9 @@ public class CompanyConfirmationControllerTest {
 
     @Test
     public void postCompanyLookup() throws Exception {
-        when(companyConfirmation.getCompanyNumber()).thenReturn(ACCOUNT_NUMBER);
+        when(companyDetail.getCompanyNumber()).thenReturn(ACCOUNT_NUMBER);
         this.mockMvc.perform(post(COMPANY_LOOKUP_URL, ACCOUNT_NUMBER, FORWARD_URL)
-            .flashAttr("companyConfirmation", companyConfirmation))
+            .flashAttr("companyDetail", companyDetail))
             .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/test/01234567/test"));
     }
 

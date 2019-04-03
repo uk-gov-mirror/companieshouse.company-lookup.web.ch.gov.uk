@@ -16,7 +16,7 @@ import uk.gov.companieshouse.api.model.company.RegisteredOfficeAddressApi;
 import uk.gov.companieshouse.api.model.company.account.CompanyAccountApi;
 import uk.gov.companieshouse.api.model.company.account.LastAccountsApi;
 import uk.gov.companieshouse.lookup.exception.ServiceException;
-import uk.gov.companieshouse.lookup.model.CompanyConfirmation;
+import uk.gov.companieshouse.lookup.model.CompanyDetail;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
 import uk.gov.companieshouse.lookup.service.ApiClientService;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
@@ -32,7 +32,7 @@ public class CompanyLookupServiceImpl implements CompanyLookupService {
     private ApiClientService apiClientService;
 
     @Override
-    public CompanyConfirmation getCompanyProfile(String companyNumber)
+    public CompanyDetail getCompanyProfile(String companyNumber)
         throws ServiceException {
 
         ApiClient apiClient = apiClientService.getApiClient();
@@ -66,36 +66,36 @@ public class CompanyLookupServiceImpl implements CompanyLookupService {
         return validationErrors;
     }
 
-    private CompanyConfirmation mapCompany(CompanyProfileApi companyProfileApi) {
+    private CompanyDetail mapCompany(CompanyProfileApi companyProfileApi) {
 
-        CompanyConfirmation companyConfirmation = new CompanyConfirmation();
+        CompanyDetail companyDetail = new CompanyDetail();
         RegisteredOfficeAddressApi registeredOfficeAddress = companyProfileApi
             .getRegisteredOfficeAddress();
 
-        companyConfirmation.setCompanyName(companyProfileApi.getCompanyName());
-        companyConfirmation.setCompanyNumber(companyProfileApi.getCompanyNumber());
+        companyDetail.setCompanyName(companyProfileApi.getCompanyName());
+        companyDetail.setCompanyNumber(companyProfileApi.getCompanyNumber());
 
         if (registeredOfficeAddress != null) {
 
-            companyConfirmation.setRegisteredOfficeAddress(
+            companyDetail.setRegisteredOfficeAddress(
                 ((registeredOfficeAddress.getAddressLine1() != null)?registeredOfficeAddress.getAddressLine1():"")+
                 ((registeredOfficeAddress.getAddressLine2() != null)?", "+registeredOfficeAddress.getAddressLine2():"")+
-                ((registeredOfficeAddress.getPostalCode() != null)?", "+registeredOfficeAddress.getPostalCode():"")+".");
+                ((registeredOfficeAddress.getPostalCode() != null)?", "+registeredOfficeAddress.getPostalCode():""));
         }
 
-        companyConfirmation
+        companyDetail
             .setAccountsNextMadeUpTo(Optional.of(companyProfileApi)
                 .map(CompanyProfileApi::getAccounts)
                 .map(CompanyAccountApi::getNextMadeUpTo)
                 .orElse(null));
 
-        companyConfirmation.setLastAccountsNextMadeUpTo(Optional.of(companyProfileApi)
+        companyDetail.setLastAccountsNextMadeUpTo(Optional.of(companyProfileApi)
             .map(CompanyProfileApi::getAccounts)
             .map(CompanyAccountApi::getLastAccounts)
             .map(LastAccountsApi::getMadeUpTo)
             .orElse(null));
 
-        return companyConfirmation;
+        return companyDetail;
 
     }
 }

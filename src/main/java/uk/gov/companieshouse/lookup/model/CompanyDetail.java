@@ -2,7 +2,7 @@ package uk.gov.companieshouse.lookup.model;
 
 import java.time.LocalDate;
 
-public class CompanyConfirmation {
+public class CompanyDetail {
 
     private String companyName;
 
