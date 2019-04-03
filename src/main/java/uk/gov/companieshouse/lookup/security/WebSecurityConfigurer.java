@@ -21,6 +21,6 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
             http.addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class);
         }
-   }
+    }
 
 }
