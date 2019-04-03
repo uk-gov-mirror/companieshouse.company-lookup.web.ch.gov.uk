@@ -1,9 +1,12 @@
 package uk.gov.companieshouse.lookup.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -48,10 +51,7 @@ public class CompanyLookupController {
         @ModelAttribute("companyLookup") @Valid CompanyLookup companyLookup,
         BindingResult bindingResult, RedirectAttributes attributes) throws ServiceException {
 
-        List<ValidationError> validationErrors = companyLookupService
-            .validateCompanyLookup(companyLookup);
-        if (!validationErrors.isEmpty()) {
-            validationHandler.bindValidationErrors(bindingResult, validationErrors);
+        if (bindingResult.hasErrors()) {
             return COMPANY_LOOKUP;
         }
 
@@ -59,6 +59,7 @@ public class CompanyLookupController {
             .getCompanyProfile(companyLookup.getCompanyNumber());
 
         if (companyDetail == null) {
+            List<ValidationError> validationErrors = new ArrayList<>();
             ValidationError error = new ValidationError();
             error.setMessageKey("company.not.found");
             validationErrors.add(error);

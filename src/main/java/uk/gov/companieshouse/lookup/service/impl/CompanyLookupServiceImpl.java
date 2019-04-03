@@ -1,9 +1,6 @@
 package uk.gov.companieshouse.lookup.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,10 +14,8 @@ import uk.gov.companieshouse.api.model.company.account.CompanyAccountApi;
 import uk.gov.companieshouse.api.model.company.account.LastAccountsApi;
 import uk.gov.companieshouse.lookup.exception.ServiceException;
 import uk.gov.companieshouse.lookup.model.CompanyDetail;
-import uk.gov.companieshouse.lookup.model.CompanyLookup;
 import uk.gov.companieshouse.lookup.service.ApiClientService;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
-import uk.gov.companieshouse.lookup.validation.ValidationError;
 
 @Service
 public class CompanyLookupServiceImpl implements CompanyLookupService {
@@ -46,24 +41,9 @@ public class CompanyLookupServiceImpl implements CompanyLookupService {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND.value()) {
                 return null;
             }
-            throw new ServiceException("Failed to retrieve company profile for "+companyNumber, e);
+            throw new ServiceException("Failed to retrieve company profile for " + companyNumber,
+                e);
         }
-    }
-
-    @Override
-    public List<ValidationError> validateCompanyLookup(CompanyLookup companyLookup) {
-
-        List<ValidationError> validationErrors = new ArrayList<>();
-
-        if (StringUtils.isBlank(companyLookup.getCompanyNumber()) || !StringUtils
-            .isNumeric(companyLookup.getCompanyNumber())) {
-            ValidationError error = new ValidationError();
-            error.setFieldPath("companyNumber");
-            error.setMessageKey("validation.number.invalid");
-            validationErrors.add(error);
-        }
-
-        return validationErrors;
     }
 
     private CompanyDetail mapCompany(CompanyProfileApi companyProfileApi) {
@@ -78,9 +58,12 @@ public class CompanyLookupServiceImpl implements CompanyLookupService {
         if (registeredOfficeAddress != null) {
 
             companyDetail.setRegisteredOfficeAddress(
-                ((registeredOfficeAddress.getAddressLine1() != null)?registeredOfficeAddress.getAddressLine1():"")+
-                ((registeredOfficeAddress.getAddressLine2() != null)?", "+registeredOfficeAddress.getAddressLine2():"")+
-                ((registeredOfficeAddress.getPostalCode() != null)?", "+registeredOfficeAddress.getPostalCode():""));
+                ((registeredOfficeAddress.getAddressLine1() != null) ? registeredOfficeAddress
+                    .getAddressLine1() : "") +
+                    ((registeredOfficeAddress.getAddressLine2() != null) ? ", "
+                        + registeredOfficeAddress.getAddressLine2() : "") +
+                    ((registeredOfficeAddress.getPostalCode() != null) ? ", "
+                        + registeredOfficeAddress.getPostalCode() : ""));
         }
 
         companyDetail

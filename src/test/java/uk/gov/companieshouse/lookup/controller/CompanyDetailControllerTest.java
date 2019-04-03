@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,14 +42,16 @@ public class CompanyDetailControllerTest {
     }
 
     @Test
-    public void getCompanyLookup() throws Exception {
+    @DisplayName("Get Company Lookup - Success")
+    public void getCompanyDetail() throws Exception {
         this.mockMvc.perform(
             get(COMPANY_LOOKUP_URL, ACCOUNT_NUMBER, FORWARD_URL))
             .andExpect(status().isOk()).andReturn();
     }
 
     @Test
-    public void postCompanyLookup() throws Exception {
+    @DisplayName("Post Company Detail - Success")
+    public void postCompanyDetail() throws Exception {
         when(companyDetail.getCompanyNumber()).thenReturn(ACCOUNT_NUMBER);
         this.mockMvc.perform(post(COMPANY_LOOKUP_URL, ACCOUNT_NUMBER, FORWARD_URL)
             .flashAttr("companyDetail", companyDetail))

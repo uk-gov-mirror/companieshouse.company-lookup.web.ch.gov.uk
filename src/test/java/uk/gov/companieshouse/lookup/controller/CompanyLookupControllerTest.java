@@ -1,17 +1,18 @@
 package uk.gov.companieshouse.lookup.controller;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.List;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,6 +32,12 @@ import uk.gov.companieshouse.lookup.validation.ValidationHandler;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CompanyLookupControllerTest {
 
+    private static final String COMPANY_LOOKUP_URL = "/company-lookup/search?forward={forward}";
+    private static final String TEST_PATH = "companyLookup.companyNumber";
+    private static final String TEMPLATE = "lookup/companyLookup";
+    public static final String MODEL_ATTRIBUTE = "companyLookup";
+    public static final String FORWARD_URL_PARAM = "forwardURL";
+
     private MockMvc mockMvc;
 
     @Mock
@@ -46,53 +53,57 @@ public class CompanyLookupControllerTest {
     private CompanyLookup companyLookup;
 
     @Mock
-    private BindingResult bindingResult;
-
-    @Mock
     private ApiErrorResponseException apiErrorResponseException;
-
-    @Mock
-    private List<ValidationError> validationErrors;
 
     @InjectMocks
     private CompanyLookupController companyLookupController;
+
+
 
     @BeforeEach
     void setUpBeforeEAch() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(companyLookupController).build();
     }
 
-
     @Test
+    @DisplayName("Get Company Lookup - Success")
     public void getCompanyLookup() throws Exception {
-        this.mockMvc.perform(get("/company-lookup/search?forward={forward}", "forwardURL"))
-            .andDo(print()).andExpect(status().isOk()).andReturn();
+        this.mockMvc.perform(get(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM))
+            .andDo(print()).andExpect(status().isOk())
+            .andExpect(view().name(TEMPLATE))
+            .andExpect(model().attributeExists(MODEL_ATTRIBUTE)).andReturn();
     }
 
     @Test
+    @DisplayName("Post Company Lookup - Success")
     public void postCompanyLookup() throws Exception {
         when(companyLookupService.getCompanyProfile(anyString())).thenReturn(companyDetail);
         when(companyLookup.getCompanyNumber()).thenReturn("123");
-        this.mockMvc.perform(post("/company-lookup/search?forward={forward}", "forwardURL")
-            .flashAttr("companyLookup", companyLookup)).andDo(print())
+        this.mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
+            .flashAttr(MODEL_ATTRIBUTE, companyLookup)).andDo(print())
             .andExpect(status().is3xxRedirection());
     }
 
     @Test
-    public void postCompanyLookupFail() throws Exception {
-        when(companyLookupService.validateCompanyLookup(any())).thenReturn(validationErrors);
-        this.mockMvc.perform(post("/company-lookup/search?forward={forward}", "forwardURL"))
-            .andDo(print())
+    @DisplayName("Post Company Lookup - Fail bind error")
+    public void postCompanyLookupBindFail() throws Exception {
+        when(companyLookupService.getCompanyProfile(null)).thenReturn(null);
+
+        this.mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
+            .param(TEST_PATH, "test"))
             .andExpect(status().isOk())
-            .andExpect(forwardedUrl("lookup/companyLookup"));
+            .andExpect(view().name(TEMPLATE))
+            .andExpect(model().attributeExists(MODEL_ATTRIBUTE));
     }
 
     @Test
-    public void postCompanyLookupNoneFound() throws Exception {
+    @DisplayName("Post Company Lookup - Failed to find the company")
+    public void postCompanyLookupFail() throws Exception {
         when(companyLookupService.getCompanyProfile(null)).thenReturn(null);
-        this.mockMvc.perform(post("/company-lookup/search?forward={forward}", "forwardURL"))
-            .andDo(print())
+        this.mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM))
             .andExpect(status().isOk())
-            .andExpect(forwardedUrl("lookup/companyLookup"));
+            .andExpect(view().name(TEMPLATE))
+            .andExpect(model().attributeExists(MODEL_ATTRIBUTE));
     }
+
 }
