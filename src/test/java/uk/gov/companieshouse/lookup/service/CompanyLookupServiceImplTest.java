@@ -54,34 +54,36 @@ import uk.gov.companieshouse.lookup.service.impl.CompanyLookupServiceImpl;
             when(companyResourceHandler.get(COMPANY_URI)).thenReturn(companyGet);
         }
 
-//        @org.junit.jupiter.api.Test
-//        @DisplayName("Get Company Profile - Success Path")
-//        void getCompanyProfileSuccess() throws ServiceException, ApiErrorResponseException, URIValidationException {
-//
-//            when(companyGet.execute()).thenReturn(new CompanyProfileApi());
-//
-//            CompanyConfirmation companyConfirmation = companyService.getCompanyProfile(COMPANY_NUMBER);
-//
-//            assertNotNull(companyConfirmation);
-//        }
-//
-//        @org.junit.jupiter.api.Test
-//        @DisplayName("Get Company Profile - Throws ApiErrorResponseException")
-//        void getBalanceSheetThrowsApiErrorResponseException() throws ApiErrorResponseException, URIValidationException {
-//
-//            when(companyGet.execute()).thenThrow(ApiErrorResponseException.class);
-//
-//            assertThrows(ServiceException.class, () ->
-//                companyService.getCompanyProfile(COMPANY_NUMBER));
-//        }
-//
-//        @Test
-//        @DisplayName("Get Company Profile - Throws URIValidationException")
-//        void getBalanceSheetThrowsURIValidationException() throws ApiErrorResponseException, URIValidationException {
-//
-//            when(companyGet.execute()).thenThrow(URIValidationException.class);
-//
-//            assertThrows(ServiceException.class, () ->
-//                companyService.getCompanyProfile(COMPANY_NUMBER));
-//        }
+        @Test
+        @DisplayName("Get Company Profile - Success Path")
+        void getCompanyProfileSuccess() throws ServiceException, ApiErrorResponseException, URIValidationException {
+
+            when(companyGet.execute()).thenReturn(new CompanyProfileApi());
+
+            CompanyConfirmation companyConfirmation = companyService.getCompanyProfile(COMPANY_NUMBER);
+
+            assertNotNull(companyConfirmation);
+        }
+
+        @Test
+        @DisplayName("Get Company Profile - Throws ApiErrorResponseException")
+        void getBalanceSheetThrowsApiErrorResponseException()
+            throws ApiErrorResponseException, URIValidationException {
+
+            when(companyGet.execute()).thenThrow(ApiErrorResponseException.class);
+
+            assertThrows(ServiceException.class, () ->
+                companyService.getCompanyProfile(COMPANY_NUMBER));
+        }
+
+        @Test
+        @DisplayName("Get Company Profile - Throws URIValidationException")
+        void getBalanceSheetThrowsURIValidationException()
+            throws ApiErrorResponseException, URIValidationException {
+
+            when(companyGet.execute()).thenThrow(URIValidationException.class);
+
+            assertThrows(ServiceException.class, () ->
+                companyService.getCompanyProfile(COMPANY_NUMBER));
+        }
     }

@@ -19,7 +19,6 @@ import uk.gov.companieshouse.lookup.model.CompanyConfirmation;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
 import uk.gov.companieshouse.lookup.validation.ValidationError;
-import uk.gov.companieshouse.sdk.manager.ApiClientManager;
 
 @Service
 public class CompanyLookupServiceImpl implements CompanyLookupService {
@@ -34,7 +33,7 @@ public class CompanyLookupServiceImpl implements CompanyLookupService {
     public CompanyConfirmation getCompanyProfile(String companyNumber)
         throws ServiceException {
 
-        ApiClient apiClient = ApiClientManager.getSDK();
+        ApiClient apiClient = apiClientService.getApiClient();
         String uri = GET_COMPANY_URI.expand(companyNumber).toString();
 
         try {

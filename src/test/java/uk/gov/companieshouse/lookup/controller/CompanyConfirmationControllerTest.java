@@ -7,35 +7,37 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.Test;
+
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import uk.gov.companieshouse.lookup.model.CompanyConfirmation;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(CompanyConfirmationController.class)
+@ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CompanyConfirmationControllerTest {
 
     private static final String COMPANY_LOOKUP_URL = "/company-lookup/{companyNumber}/confirmation?forward={forward}";
     private static final String FORWARD_URL = "/test/{companyNumber}/test";
     private static final String ACCOUNT_NUMBER = "01234567";
 
-    @Autowired
     private MockMvc mockMvc;
 
     @Mock
     private CompanyConfirmation companyConfirmation;
 
+    @InjectMocks
+    private CompanyConfirmationController companyConfirmationController;
+
     @BeforeEach
-    void setup(WebApplicationContext wac) {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    void setUpBeforeEAch() {
+        this.mockMvc = MockMvcBuilders.standaloneSetup(companyConfirmationController).build();
     }
 
     @Test

@@ -8,21 +8,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.context.WebApplicationContext;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.lookup.model.CompanyConfirmation;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
@@ -30,17 +29,16 @@ import uk.gov.companieshouse.lookup.service.CompanyLookupService;
 import uk.gov.companieshouse.lookup.validation.ValidationError;
 import uk.gov.companieshouse.lookup.validation.ValidationHandler;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(CompanyLookupController.class)
+@ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CompanyLookupControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private CompanyLookupService companyLookupService;
 
-    @MockBean
+    @Mock
     private ValidationHandler validationHandler;
 
     @Mock
@@ -58,10 +56,14 @@ public class CompanyLookupControllerTest {
     @Mock
     private List<ValidationError> validationErrors;
 
+    @InjectMocks
+    private CompanyLookupController companyLookupController;
+
     @BeforeEach
-    void setup(WebApplicationContext wac) {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    void setUpBeforeEAch() {
+        this.mockMvc = MockMvcBuilders.standaloneSetup(companyLookupController).build();
     }
+
 
     @Test
     public void getCompanyLookup() throws Exception {
@@ -84,15 +86,15 @@ public class CompanyLookupControllerTest {
         this.mockMvc.perform(post("/company-lookup/search?forward={forward}", "forwardURL"))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(content().string(containsString("What is the company number")));
+            .andExpect(forwardedUrl("lookup/companyLookup"));
     }
 
     @Test
     public void postCompanyLookupNoneFound() throws Exception {
-        when(companyLookupService.getCompanyProfile(anyString())).thenReturn(null);
+        when(companyLookupService.getCompanyProfile(null)).thenReturn(null);
         this.mockMvc.perform(post("/company-lookup/search?forward={forward}", "forwardURL"))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(content().string(containsString("What is the company number")));
+            .andExpect(forwardedUrl("lookup/companyLookup"));
     }
 }
