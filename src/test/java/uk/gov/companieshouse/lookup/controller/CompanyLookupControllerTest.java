@@ -1,6 +1,5 @@
 package uk.gov.companieshouse.lookup.controller;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -9,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +23,6 @@ import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.lookup.model.CompanyDetail;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
-import uk.gov.companieshouse.lookup.validation.ValidationError;
 import uk.gov.companieshouse.lookup.validation.ValidationHandler;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,6 +34,7 @@ public class CompanyLookupControllerTest {
     private static final String TEMPLATE = "lookup/companyLookup";
     public static final String MODEL_ATTRIBUTE = "companyLookup";
     public static final String FORWARD_URL_PARAM = "forwardURL";
+    public static final String COMPANY_NUMBER = "12345678";
 
     private MockMvc mockMvc;
 
@@ -53,15 +51,17 @@ public class CompanyLookupControllerTest {
     private CompanyLookup companyLookup;
 
     @Mock
+    private BindingResult bindingResult;
+
+    @Mock
     private ApiErrorResponseException apiErrorResponseException;
 
     @InjectMocks
     private CompanyLookupController companyLookupController;
 
 
-
     @BeforeEach
-    void setUpBeforeEAch() {
+    private void setUpBeforeEAch() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(companyLookupController).build();
     }
 
@@ -77,18 +77,16 @@ public class CompanyLookupControllerTest {
     @Test
     @DisplayName("Post Company Lookup - Success")
     public void postCompanyLookup() throws Exception {
-        when(companyLookupService.getCompanyProfile(anyString())).thenReturn(companyDetail);
-        when(companyLookup.getCompanyNumber()).thenReturn("123");
-        this.mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
-            .flashAttr(MODEL_ATTRIBUTE, companyLookup)).andDo(print())
-            .andExpect(status().is3xxRedirection());
+        when(companyLookupService.getCompanyProfile(COMPANY_NUMBER)).thenReturn(companyDetail);
+        this.mockMvc
+            .perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM).param("companyNumber", COMPANY_NUMBER))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:/company-lookup/12345678/detail"));
     }
 
     @Test
     @DisplayName("Post Company Lookup - Fail bind error")
     public void postCompanyLookupBindFail() throws Exception {
-        when(companyLookupService.getCompanyProfile(null)).thenReturn(null);
-
         this.mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
             .param(TEST_PATH, "test"))
             .andExpect(status().isOk())
@@ -99,11 +97,11 @@ public class CompanyLookupControllerTest {
     @Test
     @DisplayName("Post Company Lookup - Failed to find the company")
     public void postCompanyLookupFail() throws Exception {
-        when(companyLookupService.getCompanyProfile(null)).thenReturn(null);
-        this.mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM))
+        when(companyLookupService.getCompanyProfile(COMPANY_NUMBER)).thenReturn(null);
+        this.mockMvc
+            .perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM).param("companyNumber", COMPANY_NUMBER))
             .andExpect(status().isOk())
-            .andExpect(view().name(TEMPLATE))
-            .andExpect(model().attributeExists(MODEL_ATTRIBUTE));
+            .andExpect(view().name(TEMPLATE));
     }
 
 }

@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler({RuntimeException.class, ServiceException.class})
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleException(HttpServletRequest request, Exception ex) {
 
         LOG.errorRequest(request, ex.getMessage(), ex);

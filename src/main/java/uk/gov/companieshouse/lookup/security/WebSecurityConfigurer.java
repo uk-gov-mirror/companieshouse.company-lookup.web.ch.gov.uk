@@ -16,8 +16,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     public static class CompanyAccountsSecurityFilterConfig extends WebSecurityConfigurerAdapter {
 
         @Override
-        protected void configure(HttpSecurity http)
-            throws Exception {
+        protected void configure(HttpSecurity http) {
 
             http.addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class);
         }

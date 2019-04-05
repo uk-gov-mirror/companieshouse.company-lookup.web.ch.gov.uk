@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.companieshouse.lookup.model.CompanyDetail;
+import uk.gov.companieshouse.lookup.service.CompanyLookupService;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -36,8 +37,11 @@ public class CompanyDetailControllerTest {
     @InjectMocks
     private CompanyDetailController companyDetailController;
 
+    @Mock
+    private CompanyLookupService companyLookupService;
+
     @BeforeEach
-    void setUpBeforeEAch() {
+    private void setUpBeforeEach() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(companyDetailController).build();
     }
 

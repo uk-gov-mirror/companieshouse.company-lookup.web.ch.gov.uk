@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UriTemplate;
+import uk.gov.companieshouse.logging.Logger;
+import uk.gov.companieshouse.logging.LoggerFactory;
+import uk.gov.companieshouse.lookup.Application;
 import uk.gov.companieshouse.lookup.exception.ServiceException;
 import uk.gov.companieshouse.lookup.model.CompanyDetail;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
@@ -32,6 +33,10 @@ public class CompanyLookupController {
     private static final UriTemplate FOUND_REDIRECT = new UriTemplate(
         "/company-lookup/{companyNumber}/detail");
     private static final String COMPANY_LOOKUP = "lookup/companyLookup";
+
+    protected static final Logger LOGGER = LoggerFactory
+        .getLogger(Application.APPLICATION_NAME_SPACE);
+
 
     @Autowired
     private CompanyLookupService companyLookupService;

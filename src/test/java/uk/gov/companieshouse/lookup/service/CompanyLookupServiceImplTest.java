@@ -56,7 +56,7 @@ import uk.gov.companieshouse.lookup.service.impl.CompanyLookupServiceImpl;
 
         @Test
         @DisplayName("Get Company Profile - Success Path")
-        void getCompanyProfileSuccess() throws ServiceException, ApiErrorResponseException, URIValidationException {
+        private void getCompanyProfileSuccess() throws ServiceException, ApiErrorResponseException, URIValidationException {
 
             when(companyGet.execute()).thenReturn(new CompanyProfileApi());
 
@@ -67,7 +67,7 @@ import uk.gov.companieshouse.lookup.service.impl.CompanyLookupServiceImpl;
 
         @Test
         @DisplayName("Get Company Profile - Throws ApiErrorResponseException")
-        void getBalanceSheetThrowsApiErrorResponseException()
+        private void getBalanceSheetThrowsApiErrorResponseException()
             throws ApiErrorResponseException, URIValidationException {
 
             when(companyGet.execute()).thenThrow(ApiErrorResponseException.class);
@@ -78,7 +78,7 @@ import uk.gov.companieshouse.lookup.service.impl.CompanyLookupServiceImpl;
 
         @Test
         @DisplayName("Get Company Profile - Throws URIValidationException")
-        void getBalanceSheetThrowsURIValidationException()
+        private void getBalanceSheetThrowsURIValidationException()
             throws ApiErrorResponseException, URIValidationException {
 
             when(companyGet.execute()).thenThrow(URIValidationException.class);

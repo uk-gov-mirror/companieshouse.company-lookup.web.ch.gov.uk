@@ -58,12 +58,12 @@ public class CompanyLookupServiceImpl implements CompanyLookupService {
         if (registeredOfficeAddress != null) {
 
             companyDetail.setRegisteredOfficeAddress(
-                ((registeredOfficeAddress.getAddressLine1() != null) ? registeredOfficeAddress
-                    .getAddressLine1() : "") +
-                    ((registeredOfficeAddress.getAddressLine2() != null) ? ", "
-                        + registeredOfficeAddress.getAddressLine2() : "") +
-                    ((registeredOfficeAddress.getPostalCode() != null) ? ", "
-                        + registeredOfficeAddress.getPostalCode() : ""));
+                ((registeredOfficeAddress.getAddressLine1() == null) ? "": registeredOfficeAddress
+                    .getAddressLine1()) +
+                    ((registeredOfficeAddress.getAddressLine2() == null) ? "" :", "
+                        + registeredOfficeAddress.getAddressLine2() ) +
+                    ((registeredOfficeAddress.getPostalCode() == null) ? "" : ", "
+                        + registeredOfficeAddress.getPostalCode()));
         }
 
         companyDetail
