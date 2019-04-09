@@ -73,7 +73,6 @@ public class CompanyLookupController {
         }
 
         attributes.addAttribute("forward", forward);
-        attributes.addFlashAttribute("companyDetail", companyDetail);
 
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX +
             FOUND_REDIRECT.expand(companyLookup.getCompanyNumber()).toString();
