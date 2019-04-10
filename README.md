@@ -1,5 +1,5 @@
 # company-lookup.web.ch.gov.uk
-Web application to control user journeys that lookup company details directly then proceed on to complete specific a journey. This application is written using the [Spring Boot](http://projects.spring.io/spring-boot/) Java framework.
+Web application to control user journeys that lookup company details directly then proceed on to complete a specific journey. This application is written using the [Spring Boot](http://projects.spring.io/spring-boot/) Java framework.
 
 ## Requirements
 In order to run the Service locally you'll need the following installed on your machine:
