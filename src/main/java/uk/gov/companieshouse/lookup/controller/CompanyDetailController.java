@@ -27,11 +27,10 @@ public class CompanyDetailController {
     @GetMapping
     public String getCompanyDetail(
         @ModelAttribute("companyDetail") @Valid CompanyDetail companyDetail, Model model) throws ServiceException {
-        if (companyDetail.getCompanyName() ==  null){
-            CompanyDetail company = companyLookupService
-                .getCompanyProfile(companyDetail.getCompanyNumber());
-            model.addAttribute("companyDetail", company);
-        }
+        CompanyDetail company = companyLookupService
+            .getCompanyProfile(companyDetail.getCompanyNumber());
+        model.addAttribute("companyDetail", company);
+
         return "lookup/companyDetail";
     }
 
