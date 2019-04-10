@@ -1,7 +1,5 @@
 package uk.gov.companieshouse.lookup.controller;
 
-
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -27,7 +25,7 @@ public class CompanyDetailControllerTest {
 
     private static final String COMPANY_LOOKUP_URL = "/company-lookup/{companyNumber}/detail?forward={forward}";
     private static final String FORWARD_URL = "/test/{companyNumber}/test";
-    private static final String ACCOUNT_NUMBER = "01234567";
+    private static final String COMPANY_NUMBER = "01234567";
 
     private MockMvc mockMvc;
 
@@ -49,17 +47,15 @@ public class CompanyDetailControllerTest {
     @DisplayName("Get Company Lookup - Success")
     public void getCompanyDetail() throws Exception {
         this.mockMvc.perform(
-            get(COMPANY_LOOKUP_URL, ACCOUNT_NUMBER, FORWARD_URL))
+            get(COMPANY_LOOKUP_URL, COMPANY_NUMBER, FORWARD_URL))
             .andExpect(status().isOk()).andReturn();
     }
 
     @Test
     @DisplayName("Post Company Detail - Success")
     public void postCompanyDetail() throws Exception {
-        when(companyDetail.getCompanyNumber()).thenReturn(ACCOUNT_NUMBER);
-        this.mockMvc.perform(post(COMPANY_LOOKUP_URL, ACCOUNT_NUMBER, FORWARD_URL)
-            .flashAttr("companyDetail", companyDetail))
-            .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/test/01234567/test"));
+        this.mockMvc.perform(post(COMPANY_LOOKUP_URL, COMPANY_NUMBER, FORWARD_URL))
+            .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/test/"+COMPANY_NUMBER+"/test"));
     }
 
 }
