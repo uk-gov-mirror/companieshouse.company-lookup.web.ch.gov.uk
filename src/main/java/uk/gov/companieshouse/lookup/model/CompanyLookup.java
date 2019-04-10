@@ -1,14 +1,17 @@
 package uk.gov.companieshouse.lookup.model;
 
+import javax.validation.constraints.Size;
+
 public class CompanyLookup {
 
-    private String companyId;
+    @Size(min = 8)
+    private String companyNumber;
 
-    public String getCompanyId() {
-        return companyId;
+    public String getCompanyNumber() {
+        return companyNumber;
     }
 
-    public void setCompanyId(String companyId) {
-        this.companyId = companyId;
+    public void setCompanyNumber(String companyNumber) {
+        this.companyNumber = companyNumber;
     }
 }

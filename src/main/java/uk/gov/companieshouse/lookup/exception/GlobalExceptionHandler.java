@@ -5,29 +5,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import java.util.logging.Logger;
+import uk.gov.companieshouse.logging.Logger;
+import uk.gov.companieshouse.logging.LoggerFactory;
+import uk.gov.companieshouse.lookup.Application;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    //private static final Logger LOG = LoggerFactory.getLogger(Application.APPLICATION_NAME_SPACE);
-    private final static Logger LOG = Logger.getLogger(GlobalExceptionHandler.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(Application.APPLICATION_NAME_SPACE);
 
-    @ExceptionHandler(value = { RuntimeException.class })
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleRuntimeException(HttpServletRequest request, Exception ex) {
 
-        LOG.severe(ex.getMessage());
-//
-        return "error";
-    }
+    @ExceptionHandler({RuntimeException.class, ServiceException.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleException(HttpServletRequest request, Exception ex) {
 
-    @ExceptionHandler(value = { ServiceException.class })
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleServiceException(HttpServletRequest request, Exception ex) {
-
-        LOG.severe(ex.getMessage());
-        //LOG.errorRequest(request, ex.getMessage(), ex);
+        LOG.errorRequest(request, ex.getMessage(), ex);
         return "error";
     }
 }

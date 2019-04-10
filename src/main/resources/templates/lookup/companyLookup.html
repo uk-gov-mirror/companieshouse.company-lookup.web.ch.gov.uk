@@ -25,7 +25,7 @@
               What is the company number?
             </label>
 
-          <div class="govuk-form-group" th:classappend="${#fields.hasErrors('companyId')} ? 'govuk-form-group--error' : ''">
+          <div class="govuk-form-group" th:classappend="${#fields.hasErrors('companyNumber')} ? 'govuk-form-group--error' : ''">
 
             <span id="company-number-hint" class="govuk-hint">
               This is the 8-character reference issued by Companies House when the company was set up.
@@ -33,13 +33,13 @@
 
             <span class="govuk-error-message"
                   id="company-number-errorId"
-                  th:if="${#fields.hasErrors('companyId')}"
-                  th:each="e : ${#fields.errors('companyId')}" th:text="${e}">
+                  th:if="${#fields.hasErrors('companyNumber')}"
+                  th:each="e : ${#fields.errors('companyNumber')}" th:text="${e}">
             </span>
 
-            <input class="govuk-input"
+            <input class="govuk-input govuk-input--small-width"
                    id="company-number"
-                   th:field="*{companyId}"
+                   th:field="*{companyNumber}"
                    th:errorclass="govuk-input--error"
                    type="text">
           </div>
@@ -54,7 +54,7 @@
                 </span>
           </summary>
           <div class="govuk-details__text" id="company-number-help-text" aria-hidden="true">
-            Use the Companies House service to find it.
+            Use the <a href="/" title="Go to the companies house homepage"><span> Companies House service</span></a> to find it.
           </div>
         </details>
 
