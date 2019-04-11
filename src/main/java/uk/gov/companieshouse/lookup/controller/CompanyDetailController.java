@@ -42,7 +42,7 @@ public class CompanyDetailController {
 
     @PostMapping
     public String postCompanyDetail(@RequestParam("forward") String forward,
-        @ModelAttribute("companyDetail") CompanyDetail companyDetail, Model model) {
+        @ModelAttribute("companyDetail") CompanyDetail companyDetail) {
         UriTemplate forwardURI = new UriTemplate(forward);
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX +
             forwardURI.expand(companyDetail.getCompanyNumber()).toString();
