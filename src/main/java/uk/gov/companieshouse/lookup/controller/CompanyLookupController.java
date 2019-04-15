@@ -66,6 +66,7 @@ public class CompanyLookupController {
         if (companyDetail == null) {
             List<ValidationError> validationErrors = new ArrayList<>();
             ValidationError error = new ValidationError();
+            error.setFieldPath("companyNumber");
             error.setMessageKey("company.not.found");
             validationErrors.add(error);
             validationHandler.bindValidationErrors(bindingResult, validationErrors);
