@@ -1,10 +1,10 @@
 package uk.gov.companieshouse.lookup.model;
 
-import javax.validation.constraints.Size;
+import uk.gov.companieshouse.lookup.validation.CompanyNumberValidation;
 
 public class CompanyLookup {
 
-    @Size(min = 8)
+    @CompanyNumberValidation
     private String companyNumber;
 
     public String getCompanyNumber() {
