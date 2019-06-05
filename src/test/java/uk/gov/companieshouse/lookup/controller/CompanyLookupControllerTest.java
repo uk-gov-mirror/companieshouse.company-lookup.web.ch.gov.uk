@@ -19,8 +19,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
-import uk.gov.companieshouse.lookup.model.CompanyDetail;
+import uk.gov.companieshouse.lookup.model.Company;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
 import uk.gov.companieshouse.lookup.validation.ValidationHandler;
@@ -32,9 +33,9 @@ public class CompanyLookupControllerTest {
     private static final String COMPANY_LOOKUP_URL = "/company-lookup/search?forward={forward}";
     private static final String TEST_PATH = "companyLookup.companyNumber";
     private static final String TEMPLATE = "lookup/companyLookup";
-    public static final String MODEL_ATTRIBUTE = "companyLookup";
-    public static final String FORWARD_URL_PARAM = "forwardURL";
-    public static final String COMPANY_NUMBER = "12345678";
+    private static final String MODEL_ATTRIBUTE = "companyLookup";
+    private static final String FORWARD_URL_PARAM = "forwardURL";
+    private static final String COMPANY_NUMBER = "12345678";
 
     private MockMvc mockMvc;
 
@@ -45,7 +46,7 @@ public class CompanyLookupControllerTest {
     private ValidationHandler validationHandler;
 
     @Mock
-    private CompanyDetail companyDetail;
+    private Company company;
 
     @Mock
     private CompanyLookup companyLookup;
@@ -77,11 +78,11 @@ public class CompanyLookupControllerTest {
     @Test
     @DisplayName("Post Company Lookup - Success")
     public void postCompanyLookup() throws Exception {
-        when(companyLookupService.getCompanyProfile(COMPANY_NUMBER)).thenReturn(companyDetail);
+        when(companyLookupService.getCompanyProfile(COMPANY_NUMBER)).thenReturn(company);
         this.mockMvc
             .perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM).param("companyNumber", COMPANY_NUMBER))
             .andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/company-lookup/12345678/detail"));
+            .andExpect(view().name(UrlBasedViewResolver.REDIRECT_URL_PREFIX + FORWARD_URL_PARAM));
     }
 
     @Test

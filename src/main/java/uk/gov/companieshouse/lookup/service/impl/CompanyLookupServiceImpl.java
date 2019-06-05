@@ -1,6 +1,5 @@
 package uk.gov.companieshouse.lookup.service.impl;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -9,11 +8,8 @@ import uk.gov.companieshouse.api.ApiClient;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
 import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
-import uk.gov.companieshouse.api.model.company.RegisteredOfficeAddressApi;
-import uk.gov.companieshouse.api.model.company.account.CompanyAccountApi;
-import uk.gov.companieshouse.api.model.company.account.LastAccountsApi;
 import uk.gov.companieshouse.lookup.exception.ServiceException;
-import uk.gov.companieshouse.lookup.model.CompanyDetail;
+import uk.gov.companieshouse.lookup.model.Company;
 import uk.gov.companieshouse.lookup.service.ApiClientService;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
 
@@ -27,7 +23,7 @@ public class CompanyLookupServiceImpl implements CompanyLookupService {
     private ApiClientService apiClientService;
 
     @Override
-    public CompanyDetail getCompanyProfile(String companyNumber)
+    public Company getCompanyProfile(String companyNumber)
         throws ServiceException {
 
         ApiClient apiClient = apiClientService.getApiClient();
@@ -46,39 +42,11 @@ public class CompanyLookupServiceImpl implements CompanyLookupService {
         }
     }
 
-    private CompanyDetail mapCompany(CompanyProfileApi companyProfileApi) {
+    private Company mapCompany(CompanyProfileApi companyProfileApi) {
 
-        CompanyDetail companyDetail = new CompanyDetail();
-        RegisteredOfficeAddressApi registeredOfficeAddress = companyProfileApi
-            .getRegisteredOfficeAddress();
+        Company company = new Company();
+        company.setCompanyNumber(companyProfileApi.getCompanyNumber());
 
-        companyDetail.setCompanyName(companyProfileApi.getCompanyName());
-        companyDetail.setCompanyNumber(companyProfileApi.getCompanyNumber());
-
-        if (registeredOfficeAddress != null) {
-
-            companyDetail.setRegisteredOfficeAddress(
-                ((registeredOfficeAddress.getAddressLine1() == null) ? "": registeredOfficeAddress
-                    .getAddressLine1()) +
-                    ((registeredOfficeAddress.getAddressLine2() == null) ? "" :", "
-                        + registeredOfficeAddress.getAddressLine2() ) +
-                    ((registeredOfficeAddress.getPostalCode() == null) ? "" : ", "
-                        + registeredOfficeAddress.getPostalCode()));
-        }
-
-        companyDetail
-            .setAccountsNextMadeUpTo(Optional.of(companyProfileApi)
-                .map(CompanyProfileApi::getAccounts)
-                .map(CompanyAccountApi::getNextMadeUpTo)
-                .orElse(null));
-
-        companyDetail.setLastAccountsNextMadeUpTo(Optional.of(companyProfileApi)
-            .map(CompanyProfileApi::getAccounts)
-            .map(CompanyAccountApi::getLastAccounts)
-            .map(LastAccountsApi::getMadeUpTo)
-            .orElse(null));
-
-        return companyDetail;
-
+        return company;
     }
 }
