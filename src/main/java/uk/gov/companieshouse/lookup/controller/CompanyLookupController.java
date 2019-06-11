@@ -13,14 +13,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UriTemplate;
-import uk.gov.companieshouse.logging.Logger;
-import uk.gov.companieshouse.logging.LoggerFactory;
-import uk.gov.companieshouse.lookup.Application;
 import uk.gov.companieshouse.lookup.exception.ServiceException;
-import uk.gov.companieshouse.lookup.model.CompanyDetail;
+import uk.gov.companieshouse.lookup.model.Company;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
 import uk.gov.companieshouse.lookup.validation.ValidationError;
@@ -30,13 +26,7 @@ import uk.gov.companieshouse.lookup.validation.ValidationHandler;
 @RequestMapping("/company-lookup/search")
 public class CompanyLookupController {
 
-    private static final UriTemplate FOUND_REDIRECT = new UriTemplate(
-        "/company-lookup/{companyNumber}/detail");
     private static final String COMPANY_LOOKUP = "lookup/companyLookup";
-
-    protected static final Logger LOGGER = LoggerFactory
-        .getLogger(Application.APPLICATION_NAME_SPACE);
-
 
     @Autowired
     private CompanyLookupService companyLookupService;
@@ -54,16 +44,16 @@ public class CompanyLookupController {
     @PostMapping
     public String postCompanyLookup(@RequestParam("forward") String forward,
         @ModelAttribute("companyLookup") @Valid CompanyLookup companyLookup,
-        BindingResult bindingResult, RedirectAttributes attributes) throws ServiceException {
+        BindingResult bindingResult) throws ServiceException {
 
         if (bindingResult.hasErrors()) {
             return COMPANY_LOOKUP;
         }
 
-        CompanyDetail companyDetail = companyLookupService
-            .getCompanyProfile(companyLookup.getCompanyNumber());
+        Company company = companyLookupService
+                .getCompanyProfile(companyLookup.getCompanyNumber());
 
-        if (companyDetail == null) {
+        if (company == null) {
             List<ValidationError> validationErrors = new ArrayList<>();
             ValidationError error = new ValidationError();
             error.setFieldPath("companyNumber");
@@ -73,10 +63,8 @@ public class CompanyLookupController {
             return COMPANY_LOOKUP;
         }
 
-        attributes.addAttribute("forward", forward);
-
+        UriTemplate forwardURI = new UriTemplate(forward);
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX +
-            FOUND_REDIRECT.expand(companyLookup.getCompanyNumber()).toString();
-
+                forwardURI.expand(company.getCompanyNumber()).toString();
     }
 }
