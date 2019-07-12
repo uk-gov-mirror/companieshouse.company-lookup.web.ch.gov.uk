@@ -1,4 +1,7 @@
 artifact_name       := company-lookup.web.ch.gov.uk
+commit              := $(shell git rev-parse --short HEAD)
+tag                 := $(shell git tag -l 'v*-rc*' --points-at HEAD)
+version             := $(shell if [[ -n "$(tag)" ]]; then echo $(tag) | sed 's/^v//'; else echo $(commit); fi)
 
 .PHONY: all
 all: build
@@ -14,6 +17,9 @@ clean:
 .PHONY: build
 build:
 	mvn compile
+	mvn versions:set -DnewVersion=$(version) -DgenerateBackupPoms=false
+	mvn package -DskipTests=true
+	cp ./target/$(artifact_name)-$(version).jar ./$(artifact_name).jar
 
 .PHONY: test
 test: test-unit
