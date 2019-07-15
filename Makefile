@@ -1,7 +1,7 @@
 artifact_name       := company-lookup.web.ch.gov.uk
 commit              := $(shell git rev-parse --short HEAD)
 tag                 := $(shell git tag -l 'v*-rc*' --points-at HEAD)
-version := unversioned
+version 			:= unversioned
 
 .PHONY: all
 all: build
