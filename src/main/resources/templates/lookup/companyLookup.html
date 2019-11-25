@@ -20,12 +20,12 @@
 
         <fieldset class="govuk-fieldset">
 
-          <div class="govuk-form-group">
+          <div class="govuk-form-group govuk-form-group-block-important">
             <label class="govuk-label govuk-label--l" for="company-number" id="company-lookup-heading">
               What is the company number?
             </label>
 
-          <div class="govuk-form-group" th:classappend="${#fields.hasErrors('companyNumber')} ? 'govuk-form-group--error' : ''">
+          <div class="govuk-form-group govuk-form-group-block-important" th:classappend="${#fields.hasErrors('companyNumber')} ? 'govuk-form-group--error' : ''">
 
             <span id="company-number-hint" class="govuk-hint">
               This is the 8-character reference issued by Companies House when the company was set up.
