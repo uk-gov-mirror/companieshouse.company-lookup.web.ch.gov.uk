@@ -30,7 +30,7 @@ public class CompanyLookupServiceImpl implements CompanyLookupService {
         String uri = GET_COMPANY_URI.expand(companyNumber).toString();
 
         try {
-            return mapCompany(apiClient.company().get(uri).execute());
+            return mapCompany(apiClient.company().get(uri).execute().getData());
         } catch (URIValidationException e) {
             throw new ServiceException("Invalid URI for company resource", e);
         } catch (ApiErrorResponseException e) {

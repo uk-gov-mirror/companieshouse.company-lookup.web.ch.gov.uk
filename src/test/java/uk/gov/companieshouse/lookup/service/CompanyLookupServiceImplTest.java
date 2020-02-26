@@ -17,6 +17,7 @@ import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.api.handler.company.CompanyResourceHandler;
 import uk.gov.companieshouse.api.handler.company.request.CompanyGet;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
+import uk.gov.companieshouse.api.model.ApiResponse;
 import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
 import uk.gov.companieshouse.lookup.exception.ServiceException;
 import uk.gov.companieshouse.lookup.model.Company;
@@ -39,6 +40,9 @@ public class CompanyLookupServiceImplTest {
     @Mock
     private CompanyGet companyGet;
 
+    @Mock
+    private ApiResponse<CompanyProfileApi> apiResponse;
+
     @InjectMocks
     private CompanyLookupService companyService = new CompanyLookupServiceImpl();
 
@@ -59,7 +63,8 @@ public class CompanyLookupServiceImplTest {
     public void getCompanyProfileSuccess()
         throws ServiceException, ApiErrorResponseException, URIValidationException {
 
-        when(companyGet.execute()).thenReturn(new CompanyProfileApi());
+        when(companyGet.execute()).thenReturn(apiResponse);
+        when(apiResponse.getData()).thenReturn(new CompanyProfileApi());
 
         Company company = companyService.getCompanyProfile(COMPANY_NUMBER);
 
