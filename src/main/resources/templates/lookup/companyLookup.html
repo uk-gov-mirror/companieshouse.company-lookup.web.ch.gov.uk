@@ -8,7 +8,7 @@
   <title>What is the company number?</title>
 </head>
 <body>
-<div id="lookup-main-content" layout:fragment="content">
+<div id="main-content" layout:fragment="content">
 
   <form id="lookup-form" th:action="@{''}" th:object="${companyLookup}" class="form" method="post">
 
@@ -19,11 +19,16 @@
       <div class="govuk-grid-column-two-thirds">
 
         <fieldset class="govuk-fieldset">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading">
+              What is the company number?
+            </h1>
+          </legend>
 
           <div class="govuk-form-group govuk-form-group-block-important">
-            <label class="govuk-label govuk-label--l" for="company-number" id="company-lookup-heading">
+         <!--   <label class="govuk-label govuk-label--l" for="company-number" id="company-lookup-heading">
               What is the company number?
-            </label>
+            </label> -->
 
           <div class="govuk-form-group govuk-form-group-block-important" th:classappend="${#fields.hasErrors('companyNumber')} ? 'govuk-form-group--error' : ''">
 
@@ -41,7 +46,7 @@
                    id="company-number"
                    th:field="*{companyNumber}"
                    th:errorclass="govuk-input--error"
-                   type="text">
+                   type="text" aria-label="enter company number">
           </div>
           </div>
 
@@ -53,7 +58,7 @@
                   Help with company number
                 </span>
           </summary>
-          <div class="govuk-details__text" id="company-number-help-text" aria-hidden="true">
+          <div class="govuk-details__text" id="company-number-help-text">
             Use the <a href="/" title="Go to the companies house homepage" id="companies-house-service"><span> Companies House service</span></a> to find it.
           </div>
         </details>
