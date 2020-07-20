@@ -20,15 +20,10 @@
 
         <fieldset class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading">
+            <h1 class="govuk-fieldset__heading" id="company-lookup-heading">
               What is the company number?
             </h1>
           </legend>
-
-          <div class="govuk-form-group govuk-form-group-block-important">
-         <!--   <label class="govuk-label govuk-label--l" for="company-number" id="company-lookup-heading">
-              What is the company number?
-            </label> -->
 
           <div class="govuk-form-group govuk-form-group-block-important" th:classappend="${#fields.hasErrors('companyNumber')} ? 'govuk-form-group--error' : ''">
 
@@ -47,7 +42,6 @@
                    th:field="*{companyNumber}"
                    th:errorclass="govuk-input--error"
                    type="text" aria-label="enter company number">
-          </div>
           </div>
 
 
