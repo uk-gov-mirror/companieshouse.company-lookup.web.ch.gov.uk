@@ -6,10 +6,6 @@ package uk.gov.companieshouse.lookup.exception;
  */
 public class ServiceException extends Exception {
 
-    public ServiceException(String message) {
-        super(message);
-    }
-
     /**
      * Constructs a new {@code ServiceException} with a custom message and the specified cause.
      *
