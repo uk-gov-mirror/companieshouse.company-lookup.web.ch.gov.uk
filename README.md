@@ -12,7 +12,7 @@ In order to run the Service locally you'll need the following installed on your 
 To start using this service you need to hit the following URL:
 _ENVIRONMENT_/company-lookup/search?forward=_FORWARDING_URL_
 
-Name                   | Description                                                                                                 | Mandatory
----------------------- | ----------------------------------------------------------------------------------------------------------- | ---------
-ENVIRONMENT            | The URL for the environment you are currently deploying to.                                                 | ✓
-FORWARDING_URL         | The URL which should be forwarded to after the search has been completed and the normal journey continues   | ✓
+Name                   | Description                                                                                                  | Mandatory
+---------------------- | ------------------------------------------------------------------------------------------------------------ | ---------
+ENVIRONMENT            | The URL for the environment you are currently deploying to                                                   | ✓
+FORWARDING_URL         | The path the user will be forwarded to after the search has been completed and the normal journey continues. | ✓
