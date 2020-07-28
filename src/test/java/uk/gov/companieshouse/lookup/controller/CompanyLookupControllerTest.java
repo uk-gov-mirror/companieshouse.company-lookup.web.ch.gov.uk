@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
+import uk.gov.companieshouse.lookup.exception.GlobalExceptionHandler;
+import uk.gov.companieshouse.lookup.exception.RequestExceptionHandler;
 import uk.gov.companieshouse.lookup.model.Company;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
@@ -33,6 +35,7 @@ public class CompanyLookupControllerTest {
     private static final String COMPANY_LOOKUP_URL = "/company-lookup/search?forward={forward}";
     private static final String TEST_PATH = "companyLookup.companyNumber";
     private static final String TEMPLATE = "lookup/companyLookup";
+    private static final String ERROR_TEMPLATE = "error";
     private static final String MODEL_ATTRIBUTE = "companyLookup";
     private static final String FORWARD_URL_PARAM = "forwardURL";
     private static final String COMPANY_NUMBER = "12345678";
@@ -60,10 +63,9 @@ public class CompanyLookupControllerTest {
     @InjectMocks
     private CompanyLookupController companyLookupController;
 
-
     @BeforeEach
     private void setUpBeforeEAch() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(companyLookupController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(companyLookupController).setControllerAdvice(new RequestExceptionHandler()).build();
     }
 
     @Test
@@ -103,6 +105,14 @@ public class CompanyLookupControllerTest {
             .perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM).param("companyNumber", COMPANY_NUMBER))
             .andExpect(status().isOk())
             .andExpect(view().name(TEMPLATE));
+    }
+
+    @Test
+    @DisplayName("Post Company Lookup - Absolute URL specified")
+    public void postCompanyLookupAbsoluteFail() throws Exception {
+        this.mockMvc.perform(post(COMPANY_LOOKUP_URL, "http://0.0.0.0"))
+                .andExpect(status().is4xxClientError())
+                .andExpect(view().name(ERROR_TEMPLATE));
     }
 
 }
