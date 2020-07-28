@@ -14,5 +14,5 @@ _ENVIRONMENT_/company-lookup/search?forward=_FORWARDING_URL_
 
 Name                   | Description                                                                                                  | Mandatory
 ---------------------- | ------------------------------------------------------------------------------------------------------------ | ---------
-ENVIRONMENT            | The URL for the environment you are currently deploying to                                                   | ✓
+ENVIRONMENT            | The URL for the environment you are currently deploying to.                                                  | ✓
 FORWARDING_URL         | The path the user will be forwarded to after the search has been completed and the normal journey continues. | ✓
