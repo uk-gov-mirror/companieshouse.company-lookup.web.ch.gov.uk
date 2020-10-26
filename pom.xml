@@ -3,17 +3,18 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.0.3.RELEASE</version>
-    <relativePath/> <!-- lookup parent from repository -->
-  </parent>
-  <groupId>uk.gov.companieshouse</groupId>
+
   <artifactId>company-lookup.web.ch.gov.uk</artifactId>
   <version>unversioned</version>
   <name>company-lookup.web</name>
   <description>Web service to handle company lookup</description>
+
+  <parent>
+    <groupId>uk.gov.companieshouse</groupId>
+    <artifactId>companies-house-parent</artifactId>
+    <version>1.3.0</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -34,16 +35,10 @@
     <spring-test.version>5.1.3.RELEASE</spring-test.version>
     <web-security-java.version>1.1.0-rc1</web-security-java.version>
 
-    <!-- Sonar -->
-    <sonar-maven-plugin.version>3.5.0.1254</sonar-maven-plugin.version>
-    <sonar.host.url>${CODE_ANALYSIS_HOST_URL}</sonar.host.url>
-    <sonar.login>${CODE_ANALYSIS_LOGIN}</sonar.login>
-    <sonar.password>${CODE_ANALYSIS_PASSWORD}</sonar.password>
 
-    <!-- Jacoco -->
-    <jacoco-maven-plugin.version>0.7.7.201606060606</jacoco-maven-plugin.version>
+    <spring-boot-dependencies.version>2.1.3.RELEASE</spring-boot-dependencies.version>
+    <spring-boot-maven-plugin.version>2.1.3.RELEASE</spring-boot-maven-plugin.version>
 
-    <!-- Maven and Surefire plugins -->
     <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
     <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
     <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
@@ -53,6 +48,18 @@
     <artifactoryResolveSnapshotRepo>libs-snapshot-local</artifactoryResolveSnapshotRepo>
     <artifactoryResolveReleaseRepo>virtual-release</artifactoryResolveReleaseRepo>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot-dependencies.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -67,7 +74,6 @@
     <dependency>
       <groupId>nz.net.ultraq.thymeleaf</groupId>
       <artifactId>thymeleaf-layout-dialect</artifactId>
-      <version>${thymeleaf-layout-dialect.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -83,7 +89,6 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
-      <version>${spring-security-core.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
@@ -124,13 +129,11 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit-jupiter-engine.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-junit-jupiter</artifactId>
-      <version>${mockito-junit-jupiter.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -144,7 +147,6 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>${spring-test.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -175,22 +177,6 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>${jacoco-maven-plugin.version}</version>
-        <executions>
-          <execution>
-            <id>default-prepare-agent</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>default-report</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
