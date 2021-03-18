@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UriTemplate;
 import uk.gov.companieshouse.lookup.exception.InvalidRequestException;
@@ -35,12 +36,14 @@ public class CompanyLookupController {
     private ValidationHandler validationHandler;
 
     @GetMapping
-    public String getCompanyLookup(@Valid ForwardUrl forward, BindingResult forwardResult, Model model) throws InvalidRequestException {
+    public String getCompanyLookup(@Valid ForwardUrl forward, BindingResult forwardResult, Model model,
+        @RequestParam(name = "serviceUrl", required = false) String serviceUrl) throws InvalidRequestException {
         if(forwardResult.hasErrors()) {
             throw new InvalidRequestException(String.format("Invalid forward URL: [%s]", forward.getForward()));
         }
         CompanyLookup companyLookup = new CompanyLookup();
         model.addAttribute("companyLookup", companyLookup);
+        model.addAttribute("serviceUrl", serviceUrl);
         return COMPANY_LOOKUP;
     }
 

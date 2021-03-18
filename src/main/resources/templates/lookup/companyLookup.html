@@ -60,6 +60,10 @@
         </fieldset>
         <input id="next-button" class="govuk-button" type="submit" role="button" value="Continue"/>
 
+          <div th:if="${serviceUrl}" class="govuk-body">
+              <a th:href="${serviceUrl}" title="I don't have a company number" id="efs-proposed-name"><span>I don't have a company number</span></a>
+          </div>
+
       </div>
     </div>
   </form>
