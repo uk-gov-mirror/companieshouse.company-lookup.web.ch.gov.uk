@@ -2,6 +2,7 @@ package uk.gov.companieshouse.lookup.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,25 +38,35 @@ public class CompanyLookupController {
 
     @GetMapping
     public String getCompanyLookup(@Valid ForwardUrl forward, BindingResult forwardResult, Model model,
-        @RequestParam(name = "serviceUrl", required = false) String serviceUrl) throws InvalidRequestException {
+        @RequestParam(name = "noCompanyOption", required = false) String noCompanyOption) throws InvalidRequestException {
         if(forwardResult.hasErrors()) {
             throw new InvalidRequestException(String.format("Invalid forward URL: [%s]", forward.getForward()));
         }
         CompanyLookup companyLookup = new CompanyLookup();
         model.addAttribute("companyLookup", companyLookup);
-        model.addAttribute("serviceUrl", serviceUrl);
+        model.addAttribute("noCompanyOption", noCompanyOption);
         return COMPANY_LOOKUP;
     }
 
     @PostMapping
     public String postCompanyLookup(@Valid ForwardUrl forward, BindingResult forwardResult,
                                     @ModelAttribute("companyLookup") @Valid CompanyLookup companyLookup,
-                                    BindingResult bindingResult) throws InvalidRequestException, ServiceException {
+                                    BindingResult bindingResult,
+                                    Model model,
+                                    @RequestParam(name = "noCompanyOption", required = false) String noCompanyOption,
+                                    @RequestParam(value="noCompany", required = false) String noCompany)
+                                                throws InvalidRequestException, ServiceException {
         if(forwardResult.hasErrors()){
             throw new InvalidRequestException(String.format("Invalid forward URL: [%s]", forward.getForward()));
         }
 
+        if (noCompany != null) {
+            UriTemplate forwardURI = new UriTemplate(forward.getForward());
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + forwardURI.expand("noCompany").toString();
+        }
+
         if (bindingResult.hasErrors()) {
+            model.addAttribute("noCompanyOption", noCompanyOption);
             return COMPANY_LOOKUP;
         }
 
@@ -69,6 +80,7 @@ public class CompanyLookupController {
             error.setMessageKey("company.not.found");
             validationErrors.add(error);
             validationHandler.bindValidationErrors(bindingResult, validationErrors);
+            model.addAttribute("noCompanyOption", noCompanyOption);
             return COMPANY_LOOKUP;
         }
 
