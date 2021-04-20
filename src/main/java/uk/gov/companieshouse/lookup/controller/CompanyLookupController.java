@@ -2,7 +2,6 @@ package uk.gov.companieshouse.lookup.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +24,7 @@ import uk.gov.companieshouse.lookup.validation.ValidationError;
 import uk.gov.companieshouse.lookup.validation.ValidationHandler;
 
 @Controller
-@RequestMapping("/company-lookup/search")
+@RequestMapping("/company-lookup")
 public class CompanyLookupController {
 
     private static final String COMPANY_LOOKUP = "lookup/companyLookup";
@@ -36,7 +35,7 @@ public class CompanyLookupController {
     @Autowired
     private ValidationHandler validationHandler;
 
-    @GetMapping
+    @GetMapping("/search")
     public String getCompanyLookup(@Valid ForwardUrl forward, BindingResult forwardResult, Model model,
         @RequestParam(name = "noCompanyOption", required = false) String noCompanyOption) throws InvalidRequestException {
         if(forwardResult.hasErrors()) {
@@ -47,22 +46,27 @@ public class CompanyLookupController {
         model.addAttribute("noCompanyOption", noCompanyOption);
         return COMPANY_LOOKUP;
     }
-
-    @PostMapping
-    public String postCompanyLookup(@Valid ForwardUrl forward, BindingResult forwardResult,
-                                    @ModelAttribute("companyLookup") @Valid CompanyLookup companyLookup,
-                                    BindingResult bindingResult,
-                                    Model model,
-                                    @RequestParam(name = "noCompanyOption", required = false) String noCompanyOption,
-                                    @RequestParam(value="noCompany", required = false) String noCompany)
-                                                throws InvalidRequestException, ServiceException {
-        if(forwardResult.hasErrors()){
+    
+    @GetMapping("/no-company")
+    public String getCompanyLookupNoCompany(@Valid ForwardUrl forward, BindingResult forwardResult,
+        Model model) throws InvalidRequestException {
+        if(forwardResult.hasErrors()) {
             throw new InvalidRequestException(String.format("Invalid forward URL: [%s]", forward.getForward()));
         }
+        UriTemplate forwardURI = new UriTemplate(forward.getForward());
+        
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + forwardURI.expand("noCompany");
+    }
+    
 
-        if (noCompany != null) {
-            UriTemplate forwardURI = new UriTemplate(forward.getForward());
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + forwardURI.expand("noCompany").toString();
+    @PostMapping("/search")
+    public String postCompanyLookup(@Valid ForwardUrl forward, BindingResult forwardResult,
+        @ModelAttribute("companyLookup") @Valid CompanyLookup companyLookup,
+        BindingResult bindingResult, Model model,
+        @RequestParam(name = "noCompanyOption", required = false) String noCompanyOption)
+        throws InvalidRequestException, ServiceException {
+        if(forwardResult.hasErrors()){
+            throw new InvalidRequestException(String.format("Invalid forward URL: [%s]", forward.getForward()));
         }
 
         if (bindingResult.hasErrors()) {
