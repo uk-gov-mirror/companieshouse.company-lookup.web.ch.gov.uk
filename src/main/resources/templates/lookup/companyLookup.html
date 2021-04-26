@@ -60,6 +60,12 @@
         </fieldset>
         <input id="next-button" class="govuk-button" type="submit" role="button" value="Continue"/>
 
+        <div th:if="${noCompanyOption}" class="govuk-body">
+              <a class="govuk-link govuk-link--no-visited-state"
+                 th:href="@{/company-lookup/no-number(forward=${#request.getParameter('forward')})}"
+                 th:text="#{lack.company.number}">I don't have a company number</a>
+        </div>
+
       </div>
     </div>
   </form>
