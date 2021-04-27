@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
-import uk.gov.companieshouse.lookup.exception.GlobalExceptionHandler;
 import uk.gov.companieshouse.lookup.exception.RequestExceptionHandler;
 import uk.gov.companieshouse.lookup.model.Company;
 import uk.gov.companieshouse.lookup.model.CompanyLookup;
@@ -30,9 +29,10 @@ import uk.gov.companieshouse.lookup.validation.ValidationHandler;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class CompanyLookupControllerTest {
+class CompanyLookupControllerTest {
 
     private static final String COMPANY_LOOKUP_URL = "/company-lookup/search?forward={forward}";
+    private static final String COMPANY_LOOKUP_NO_NUMBER_URL = "/company-lookup/no-number?forward={forward}";
     private static final String TEST_PATH = "companyLookup.companyNumber";
     private static final String TEMPLATE = "lookup/companyLookup";
     private static final String ERROR_TEMPLATE = "error";
@@ -70,7 +70,7 @@ public class CompanyLookupControllerTest {
 
     @Test
     @DisplayName("Get Company Lookup - Success")
-    public void getCompanyLookup() throws Exception {
+    void getCompanyLookup() throws Exception {
         this.mockMvc.perform(get(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM))
             .andDo(print()).andExpect(status().isOk())
             .andExpect(view().name(TEMPLATE))
@@ -78,8 +78,38 @@ public class CompanyLookupControllerTest {
     }
 
     @Test
+    @DisplayName("Get Company Lookup - Failed, bad forward URL")
+    void getCompanyLookupWhenForwardUrlBad() throws Exception {
+        this.mockMvc.perform(get(COMPANY_LOOKUP_URL, "@:bad-forward-url"))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(view().name(ERROR_TEMPLATE))
+            .andExpect(model().attributeDoesNotExist(MODEL_ATTRIBUTE))
+            .andReturn();
+    }
+
+    @Test
+    @DisplayName("Get Company Lookup Without Number - Success")
+    void getCompanyLookupWithoutNumber() throws Exception {
+        this.mockMvc.perform(get(COMPANY_LOOKUP_NO_NUMBER_URL, FORWARD_URL_PARAM))
+            .andDo(print()).andExpect(status().is3xxRedirection())
+            .andExpect(view().name(UrlBasedViewResolver.REDIRECT_URL_PREFIX + FORWARD_URL_PARAM));
+    }
+
+    @Test
+    @DisplayName("Get Company Lookup Without Number - Failed, bad forward URL")
+    void getCompanyLookupWithoutNumberWhenForwardUrlBad() throws Exception {
+        this.mockMvc.perform(get(COMPANY_LOOKUP_NO_NUMBER_URL, "@:bad-forward-url"))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(view().name(ERROR_TEMPLATE))
+            .andExpect(model().attributeDoesNotExist(MODEL_ATTRIBUTE))
+            .andReturn();
+    }
+
+    @Test
     @DisplayName("Post Company Lookup - Success")
-    public void postCompanyLookup() throws Exception {
+    void postCompanyLookup() throws Exception {
         when(companyLookupService.getCompanyProfile(COMPANY_NUMBER)).thenReturn(company);
         this.mockMvc
             .perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM).param("companyNumber", COMPANY_NUMBER))
@@ -89,7 +119,7 @@ public class CompanyLookupControllerTest {
 
     @Test
     @DisplayName("Post Company Lookup - Fail bind error")
-    public void postCompanyLookupBindFail() throws Exception {
+    void postCompanyLookupBindFail() throws Exception {
         this.mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
             .param(TEST_PATH, "test"))
             .andExpect(status().isOk())
@@ -99,7 +129,7 @@ public class CompanyLookupControllerTest {
 
     @Test
     @DisplayName("Post Company Lookup - Failed to find the company")
-    public void postCompanyLookupFail() throws Exception {
+    void postCompanyLookupFail() throws Exception {
         when(companyLookupService.getCompanyProfile(COMPANY_NUMBER)).thenReturn(null);
         this.mockMvc
             .perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM).param("companyNumber", COMPANY_NUMBER))
@@ -109,7 +139,7 @@ public class CompanyLookupControllerTest {
 
     @Test
     @DisplayName("Post Company Lookup - Absolute URL specified")
-    public void postCompanyLookupAbsoluteFail() throws Exception {
+    void postCompanyLookupAbsoluteFail() throws Exception {
         this.mockMvc.perform(post(COMPANY_LOOKUP_URL, "http://0.0.0.0"))
                 .andExpect(status().is4xxClientError())
                 .andExpect(view().name(ERROR_TEMPLATE));
