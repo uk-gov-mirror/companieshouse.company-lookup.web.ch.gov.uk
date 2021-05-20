@@ -2,10 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title layout:title-pattern="$CONTENT_TITLE"></title>
-    <div id="templateName" th:attr="data-id=${templateName}" hidden></div>
     <link
         th:href="@{{cdnUrl}/stylesheets/chs-styles.css(cdnUrl=${@environment.getProperty('cdn.url')})}"
         media="all" rel="stylesheet" type="text/css" />
@@ -13,11 +12,6 @@
         rel="icon"
         th:href="@{{cdnUrl}/images/favicon.ico(cdnUrl=${@environment.getProperty('cdn.url')})}"
         type="image/x-icon" />
-    <script th:inline="javascript">
-        window.SERVICE_NAME = 'company-lookup-web'
-        window.PIWIK_URL = [[${@environment.getProperty('piwik.url')}]];
-        window.PIWIK_SITE_ID = [[${@environment.getProperty('piwik.siteId')}]];
-    </script>
 </head>
 <body>
 <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=default%2CNumber.isInteger"></script>
@@ -47,6 +41,11 @@
 <script th:src="@{{cdnUrl}/javascripts/app/cookie-consent/cookie-consent-1.0.0.js(cdnUrl=${@environment.getProperty('cdn.url')})}" type="text/javascript"></script>
 <script th:src="@{{cdnUrl}/javascripts/app/cookie-consent/piwik-only-cookie-consent.js(cdnUrl=${@environment.getProperty('cdn.url')})}" type="text/javascript"></script>
 
-
+<div id="templateName" th:attr="data-id=${templateName}" hidden></div>
+<script th:inline="javascript">
+        window.SERVICE_NAME = 'company-lookup-web';
+        window.PIWIK_URL = [[${@environment.getProperty('piwik.url')}]];
+        window.PIWIK_SITE_ID = [[${@environment.getProperty('piwik.siteId')}]];
+</script>
 </body>
 </html>
