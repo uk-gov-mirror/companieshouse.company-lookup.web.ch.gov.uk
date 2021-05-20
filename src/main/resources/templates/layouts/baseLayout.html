@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title layout:title-pattern="$CONTENT_TITLE"></title>
     <link
-            th:href="@{{cdnUrl}/stylesheets/chs-styles.css(cdnUrl=${@environment.getProperty('cdn.url')})}"
-            media="all" rel="stylesheet" type="text/css" />
+        th:href="@{{cdnUrl}/stylesheets/chs-styles.css(cdnUrl=${@environment.getProperty('cdn.url')})}"
+        media="all" rel="stylesheet" type="text/css" />
     <link
-            rel="icon"
-            th:href="@{{cdnUrl}/images/favicon.ico(cdnUrl=${@environment.getProperty('cdn.url')})}"
-            type="image/x-icon" />
+        rel="icon"
+        th:href="@{{cdnUrl}/images/favicon.ico(cdnUrl=${@environment.getProperty('cdn.url')})}"
+        type="image/x-icon" />
 </head>
 <body>
 <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=default%2CNumber.isInteger"></script>
@@ -25,7 +25,7 @@
     <div th:replace="fragments/header :: header (headerText = '')"></div>
     <div class="govuk-width-container">
         <section aria-label="beta banner">
-            <div th:replace="fragments/betaBanner :: betaBanner (surveyLink = 'https://www.research.net/r/chfiling')"></div>
+        <div th:replace="fragments/betaBanner :: betaBanner (surveyLink = 'https://www.research.net/r/chfiling')"></div>
         </section>
         <div th:replace="fragments/backButtonLink :: backButtonLink"></div>
         <main id="content" role="main" class="govuk-main-wrapper">
