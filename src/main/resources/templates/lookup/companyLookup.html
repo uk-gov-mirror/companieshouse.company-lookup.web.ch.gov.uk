@@ -1,75 +1,71 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/baseLayout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/baseLayout}">
 
 <head>
   <title>What is the company number?</title>
 </head>
+
 <body>
-<div id="main-content" layout:fragment="content">
 
-  <form id="lookup-form" th:action="@{''}" th:object="${companyLookup}" class="form" method="post">
+  <div id="main-content" layout:fragment="content">
 
-    <div th:replace="fragments/globalErrors :: globalErrors"></div>
+    <form id="lookup-form" th:action="@{''}" th:object="${companyLookup}" class="form" method="post">
 
-    <div class="govuk-grid-row">
+      <div th:replace="fragments/globalErrors :: globalErrors"></div>
 
-      <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-form-group"
+        th:classappend="${#fields.hasErrors('companyNumber')} ? 'govuk-form-group--error' : ''">
 
-        <fieldset class="govuk-fieldset">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading" id="company-lookup-heading">
-              What is the company number?
-            </h1>
-          </legend>
+        <h1 class="govuk-label-wrapper">
+          <label class="govuk-label govuk-label--l" for="company-lookup-heading">
+            What is the company number?
+          </label>
+        </h1>
 
-          <div class="govuk-form-group govuk-form-group-block-important" th:classappend="${#fields.hasErrors('companyNumber')} ? 'govuk-form-group--error' : ''">
-
-            <span id="company-number-hint" class="govuk-hint">
-              This is the 8-character reference issued by Companies House when the company was set up.
-            </span>
-
-            <span class="govuk-error-message"
-                  id="company-number-errorId"
-                  th:if="${#fields.hasErrors('companyNumber')}"
-                  th:each="e : ${#fields.errors('companyNumber')}" th:text="${e}">
-            </span>
-
-            <input class="govuk-input govuk-input--small-width"
-                   id="company-number"
-                   th:field="*{companyNumber}"
-                   th:errorclass="govuk-input--error"
-                   type="text" aria-label="enter company number">
-          </div>
-
-
-
-        <details class="govuk-details" role="group">
-          <summary class="govuk-details__summary" role="button" aria-controls="company-number-help-text" aria-expanded="false">
-                <span id="company-number-help-text-link" class="govuk-details__summary-text">
-                  Help with company number
-                </span>
-          </summary>
-          <div class="govuk-details__text" id="company-number-help-text">
-            Use the <a href="/" title="Go to the companies house homepage" id="companies-house-service"><span> Companies House service</span></a> to find it.
-          </div>
-        </details>
-
-        </fieldset>
-        <input id="next-button" class="govuk-button" type="submit" role="button" value="Continue"/>
-
-        <div th:if="${noCompanyOption}" class="govuk-body">
-              <a class="govuk-link govuk-link--no-visited-state"
-                 th:href="@{/company-lookup/no-number(forward=${#request.getParameter('forward')})}"
-                 th:text="#{lack.company.number}">I don't have a company number</a>
+        <div id="company-lookup-hint" class="govuk-hint">
+          The 8-character reference issued by Companies House when the company was set up.
         </div>
 
-      </div>
-    </div>
-  </form>
+        <p id="company-lookup-error" class="govuk-error-message">
+          <span th:if="${#fields.hasErrors('companyNumber')}" th:each="e : ${#fields.errors('companyNumber')}"
+            th:text="${e}">
+          </span>
+        </p>
 
-</div>
+        <input class="govuk-input govuk-!-width-one-third" id="company-number" name="company-number" type="text"
+          aria-describedby="company-lookup-hint company-lookup-error" th:field="*{companyNumber}"
+          th:errorclass="govuk-input--error">
+
+      </div>
+
+      <details class="govuk-details" role="group">
+        <summary class="govuk-details__summary" role="button" aria-controls="company-number-help-text"
+          aria-expanded="false">
+          <span id="company-number-help-text-link" class="govuk-details__summary-text">
+            Help with company number
+          </span>
+        </summary>
+        <div class="govuk-details__text" id="company-number-help-text">
+          Use the <a href="/" title="Go to the companies house homepage" id="companies-house-service"><span>
+              Companies House service</span></a> to find it.
+        </div>
+      </details>
+
+
+      <input id="next-button" class="govuk-button" type="submit" role="button" value="Continue" />
+
+      <div th:if="${noCompanyOption}" class="govuk-body">
+        <a class="govuk-link govuk-link--no-visited-state"
+          th:href="@{/company-lookup/no-number(forward=${#request.getParameter('forward')})}"
+          th:text="#{lack.company.number}">I don't have a company number</a>
+      </div>
+
+
+    </form>
+
+  </div>
 </body>
+
 </html>
