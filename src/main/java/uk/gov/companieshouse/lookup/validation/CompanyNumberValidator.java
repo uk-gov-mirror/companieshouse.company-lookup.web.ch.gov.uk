@@ -1,7 +1,7 @@
 package uk.gov.companieshouse.lookup.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class CompanyNumberValidator implements ConstraintValidator<CompanyNumberValidation, String> {
 
