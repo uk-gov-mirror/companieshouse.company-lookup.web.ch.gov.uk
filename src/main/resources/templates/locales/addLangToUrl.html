@@ -1,20 +1,18 @@
 <!DOCTYPE html>
+<!--html xmlns:th="http://www.thymeleaf.org"
+      th:with="queryString=${#request.queryString != null ? #request.queryString : ''}"-->
 <html xmlns:th="http://www.thymeleaf.org">
-<th:block th:fragment="addLangToUrl(url, params1, displayLang, lang, force)">
-    <!--div th:if="${#request.getParameter('forward') != null}"-->
-    <a th:if="${#request.getParameter('forward') != null}" th:href="@{${url} + '?' + ${#request.queryString}}" th:lang=${lang} rel="alternate" class="govuk-link">
+<th:block th:with="queryString=${#request.queryString != null ? #request.queryString.replaceFirst('&lang=.*', '') : ''}"
+          th:fragment="addLangToUrl(url, displayLang, lang, force)">
+    <a th:if="${#request.queryString != null}"
+       th:with="queryString2=${#strings.concat(queryString, queryString == '' ? 'lang=' : '&lang=')}"
+       th:href="${url} + '?' + ${queryString2} + ${lang}" th:lang=${lang} rel="alternate" class="govuk-link">
         <span aria-hidden="true" data-th-text=${displayLang}></span>
-        <!--span aria-hidden="true" data-th-text=${#request.getParameter('forward')}>Dummy</span-->
-        <!--span aria-hidden="true" data-th-text=${#request.queryString}>Dummy2</span-->
-        <span aria-hidden="true" data-th-text=${params1}>Dummy2</span>
     </a>
-    <!--tr th:each="attr : ${#servletContext.getAttributeNames()}">
-        <td th:text="${attr}">javax.servlet.context.tempdir</td>
-        <td th:text="${#servletContext.getAttribute(attr)}">/tmp</td>
-    </tr-->
-    <!--/div-->
-    <!--a th:href="${url} + '?'" th:lang=${lang} rel="alternate" class="govuk-link">
+    <a th:if="${#request.queryString == null}"
+       th:with="queryString2=${'lang='}"
+       th:href="${url} + '?' + ${queryString2} + ${lang}" th:lang=${lang} rel="alternate" class="govuk-link">
         <span aria-hidden="true" data-th-text=${displayLang}></span>
-    </a-->
+    </a>
 </th:block>
 </html>

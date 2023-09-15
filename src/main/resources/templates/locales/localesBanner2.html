@@ -9,10 +9,11 @@
                             <!--div th:replace="locales/addLangToUrl :: addLangToUrl(${#httpServletRequest.requestURL}, 'English', 'en', true)"></div-->
                             <!-- ${#httpServletRequest.requestURI + '?' + #strings.defaultString(#httpServletRequest.queryString, '')}-->
                             <!-- ${#httpServletRequest.requestURI + '?' + #strings.defaultString(#request.queryString, '')}-->
-                            <div th:replace="locales/addLangToUrl :: addLangToUrl(${#httpServletRequest.requestURI}, 'Dummy2', 'English', 'en', true)"></div>
-                            <a href="French" lang="fr" rel="alternate" class="govuk-link" >
+                            <div th:replace="locales/addLangToUrl :: addLangToUrl(${#httpServletRequest.requestURI}, 'English', 'en', true)"></div>
+                            <div th:replace="locales/addLangToUrl :: addLangToUrl(${#httpServletRequest.requestURI}, 'French', 'fr', true)"></div>
+                            <!--a href="French" lang="fr" rel="alternate" class="govuk-link" >
                                 <span aria-hidden="true">French</span>
-                            </a>
+                            </a-->
                             <a href="German" lang="de" rel="alternate" class="govuk-link" >
                                 <span aria-hidden="true">German</span>
                             </a>
