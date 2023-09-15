@@ -1,8 +1,11 @@
 package uk.gov.companieshouse.lookup.controller;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
+
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +26,8 @@ import uk.gov.companieshouse.lookup.service.CompanyLookupService;
 import uk.gov.companieshouse.lookup.validation.ValidationError;
 import uk.gov.companieshouse.lookup.validation.ValidationHandler;
 
+import static java.lang.String.format;
+
 @Controller
 @RequestMapping("/company-lookup")
 public class CompanyLookupController {
@@ -40,12 +45,17 @@ public class CompanyLookupController {
     @GetMapping("/search")
     public String getCompanyLookup(@Valid ForwardUrl forward, BindingResult forwardResult, Model model,
         @RequestParam(name = NO_COMPANY_OPTION, required = false) String noCompanyOption) throws InvalidRequestException {
+
+        System.out.println(MessageFormat.format("Here1: forward: {0} ", forward.getForward()));
         if(forwardResult.hasErrors()) {
-            throw new InvalidRequestException(String.format(INVALID_FORWARD_URL, forward.getForward()));
+            throw new InvalidRequestException(format(INVALID_FORWARD_URL, forward.getForward()));
         }
         CompanyLookup companyLookup = new CompanyLookup();
         model.addAttribute("companyLookup", companyLookup);
         model.addAttribute(NO_COMPANY_OPTION, noCompanyOption);
+
+        System.out.println(MessageFormat.format("Here2: Model: {0} ", model.toString()));
+
         return COMPANY_LOOKUP;
     }
     
@@ -53,7 +63,7 @@ public class CompanyLookupController {
     public String getCompanyLookupNoCompany(@Valid ForwardUrl forward, BindingResult forwardResult,
         Model model) throws InvalidRequestException {
         if(forwardResult.hasErrors()) {
-            throw new InvalidRequestException(String.format(INVALID_FORWARD_URL, forward.getForward()));
+            throw new InvalidRequestException(format(INVALID_FORWARD_URL, forward.getForward()));
         }
         UriTemplate forwardURI = new UriTemplate(forward.getForward());
         
@@ -68,7 +78,7 @@ public class CompanyLookupController {
         @RequestParam(name = NO_COMPANY_OPTION, required = false) String noCompanyOption)
         throws InvalidRequestException, ServiceException {
         if(forwardResult.hasErrors()){
-            throw new InvalidRequestException(String.format(INVALID_FORWARD_URL, forward.getForward()));
+            throw new InvalidRequestException(format(INVALID_FORWARD_URL, forward.getForward()));
         }
 
         if (bindingResult.hasErrors()) {
