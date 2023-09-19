@@ -1,17 +1,9 @@
 <!DOCTYPE html>
-<!--html xmlns:th="http://www.thymeleaf.org"
-      th:with="queryString=${#request.queryString != null ? #request.queryString : ''}"-->
 <html xmlns:th="http://www.thymeleaf.org">
-<th:block th:with="queryString=${#request.queryString != null ? #request.queryString.replaceFirst('&lang=.*', '') : ''}"
+<th:block th:with="queryString=${#request.queryString != null ? #request.queryString.startsWith('lang=') ? #request.queryString.replaceFirst('lang=.*', '') : #request.queryString.replaceFirst('&lang=.*', '') : ''}"
           th:fragment="addLangToUrl(url, displayLang, lang, force)">
-    <a th:if="${#request.queryString != null}"
-       th:with="queryString2=${#strings.concat(queryString, queryString == '' ? 'lang=' : '&lang=')}"
-       th:href="${url} + '?' + ${queryString2} + ${lang}" th:lang=${lang} rel="alternate" class="govuk-link">
-        <span aria-hidden="true" data-th-text=${displayLang}></span>
-    </a>
-    <a th:if="${#request.queryString == null}"
-       th:with="queryString2=${'lang='}"
-       th:href="${url} + '?' + ${queryString2} + ${lang}" th:lang=${lang} rel="alternate" class="govuk-link">
+    <a th:with="queryParams=${#strings.concat(queryString, queryString == '' ? 'lang=' : '&lang=')}"
+       th:href="${url} + '?' + ${queryParams} + ${lang}" th:lang=${lang} rel="alternate" class="govuk-link">
         <span aria-hidden="true" data-th-text=${displayLang}></span>
     </a>
 </th:block>
