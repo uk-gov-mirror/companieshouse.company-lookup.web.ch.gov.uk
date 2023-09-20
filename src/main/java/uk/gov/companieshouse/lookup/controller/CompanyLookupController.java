@@ -46,7 +46,7 @@ public class CompanyLookupController {
     public String getCompanyLookup(@Valid ForwardUrl forward, BindingResult forwardResult, Model model,
         @RequestParam(name = NO_COMPANY_OPTION, required = false) String noCompanyOption) throws InvalidRequestException {
 
-        System.out.println(MessageFormat.format("Here1: forward: {0} ", forward.getForward()));
+        // System.out.println(MessageFormat.format("Here1: forward: {0} ", forward.getForward()));
         if(forwardResult.hasErrors()) {
             throw new InvalidRequestException(format(INVALID_FORWARD_URL, forward.getForward()));
         }
@@ -54,7 +54,7 @@ public class CompanyLookupController {
         model.addAttribute("companyLookup", companyLookup);
         model.addAttribute(NO_COMPANY_OPTION, noCompanyOption);
 
-        System.out.println(MessageFormat.format("Here2: Model: {0} ", model.toString()));
+        // System.out.println(MessageFormat.format("Here2: Model: {0} ", model.toString()));
 
         return COMPANY_LOOKUP;
     }

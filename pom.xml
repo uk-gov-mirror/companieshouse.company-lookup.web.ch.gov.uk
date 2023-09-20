@@ -30,7 +30,7 @@
     <spring-security-core.version>5.1.11.RELEASE</spring-security-core.version>
     <sdk-manager-java.version>1.3.0-rc4</sdk-manager-java.version>
     <common-web-java.version>1.5.1</common-web-java.version>
-    <!--company-lookup-locales.version>1.0.0</company-lookup-locales.version-->
+    <company-lookup-locales.version>1.0.0</company-lookup-locales.version>
     <hamcrest-library-version>2.1</hamcrest-library-version>
     <spring-test.version>5.1.3.RELEASE</spring-test.version>
 
@@ -160,11 +160,11 @@
       <version>${common-web-java.version}</version>
     </dependency>
 
-    <!--dependency>
+    <dependency>
       <groupId>uk.gov.companieshouse</groupId>
       <artifactId>company-lookup-locales</artifactId>
       <version>${company-lookup-locales.version}</version>
-    </dependency-->
+    </dependency>
   </dependencies>
 
   <build>
