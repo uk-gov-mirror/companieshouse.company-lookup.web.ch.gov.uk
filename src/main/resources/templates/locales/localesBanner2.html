@@ -6,9 +6,10 @@
                 <nav class="govuk-language-select" aria-label="Language switcher">
                     <ul class="govuk-language-select__list">
                         <li class="govuk-language-select__list-item">
-                            <div th:replace="locales/addLangToUrl :: addLangToUrl(${#httpServletRequest.requestURI}, 'English', 'en', true)"></div>
-                            <div th:replace="locales/addLangToUrl :: addLangToUrl(${#httpServletRequest.requestURI}, 'French', 'fr', true)"></div>
-                            <div th:replace="locales/addLangToUrl :: addLangToUrl(${#httpServletRequest.requestURI}, 'German', 'de', true)"></div>
+                            <div th:replace="locales/addLangToUrl :: addLangToUrl(${#httpServletRequest.requestURI}, #{label.lang.en}, 'en', true)"></div>
+                            <div th:replace="locales/addLangToUrl :: addLangToUrl(${#httpServletRequest.requestURI}, #{label.lang.fr}, 'fr', true)"></div>
+                            <div th:replace="locales/addLangToUrl :: addLangToUrl(${#httpServletRequest.requestURI}, #{label.lang.de}, 'de', true)"></div>
+                            <div th:replace="locales/addLangToUrl :: addLangToUrl(${#httpServletRequest.requestURI}, #{label.lang.wl}, 'wl', true)"></div>
                         </li>
                     </ul>
                 </nav>

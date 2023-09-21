@@ -1,6 +1,9 @@
 package uk.gov.companieshouse.lookup.config;
 
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
+
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,12 +17,36 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @Configuration
 public class MessageConfig implements WebMvcConfigurer {
 
+    /*
+    @Autowired
+    private ResourceBundleMessageSource messageSource;
+
+    public Set<String> getSupportedLanguages() {
+        Set<String> languages = new HashSet<>();
+
+        Locale[] locales = messageSource.getSupportedLocales();
+        for (Locale locale : locales) {
+            languages.add(locale.getLanguage());
+        }
+
+        return languages;
+    }
+    */
+
+
     @Bean("messageSource")
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         //messageSource.setBasenames("language/messages");
         messageSource.setBasenames("messages");
         messageSource.setDefaultEncoding("UTF-8");
+
+        //Set<String> languages = new HashSet<>();
+        //Locale[] locales = messageSource.getSupportedLocales();
+        //for (Locale locale : locales) {
+        //    languages.add(locale.getLanguage());
+        //}
+
         return messageSource;
     }
 
