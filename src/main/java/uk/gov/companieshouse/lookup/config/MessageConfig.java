@@ -1,8 +1,6 @@
 package uk.gov.companieshouse.lookup.config;
 
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +30,6 @@ public class MessageConfig implements WebMvcConfigurer {
         return languages;
     }
     */
-
 
     @Bean("messageSource")
     public MessageSource messageSource() {

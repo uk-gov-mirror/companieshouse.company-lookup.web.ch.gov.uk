@@ -31,6 +31,7 @@
     <sdk-manager-java.version>1.3.0-rc4</sdk-manager-java.version>
     <common-web-java.version>1.5.1</common-web-java.version>
     <company-lookup-locales.version>1.0.0</company-lookup-locales.version>
+    <ch-java-utils.version>1.0.0</ch-java-utils.version>
     <hamcrest-library-version>2.1</hamcrest-library-version>
     <spring-test.version>5.1.3.RELEASE</spring-test.version>
 
@@ -164,6 +165,12 @@
       <groupId>uk.gov.companieshouse</groupId>
       <artifactId>company-lookup-locales</artifactId>
       <version>${company-lookup-locales.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>uk.gov.companieshouse</groupId>
+      <artifactId>ch-java-utils</artifactId>
+      <version>${ch-java-utils.version}</version>
     </dependency>
   </dependencies>
 
