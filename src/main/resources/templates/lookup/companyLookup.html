@@ -20,10 +20,11 @@
 
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--l" for="company-number" data-th-text="#{label.whatCompanyNumber}">
+            What is the company number?
           </label>
         </h1>
 
-        <div id="company-lookup-hint" class="govuk-hint">
+        <div id="company-lookup-hint" class="govuk-hint" data-th-text="#{label.eightCharacterRefIssued}">
           The 8-character reference issued by Companies House when the company was set up
         </div>
 
@@ -42,7 +43,7 @@
       <details class="govuk-details" role="group">
         <summary class="govuk-details__summary" role="button" aria-controls="company-number-help-text"
           aria-expanded="false">
-          <span id="company-number-help-text-link" class="govuk-details__summary-text">
+          <span id="company-number-help-text-link" class="govuk-details__summary-text" data-th-text="#{label.helpWithCompanyNumber}">
             Help with company number
           </span>
         </summary>
@@ -53,7 +54,7 @@
       </details>
 
 
-      <input id="next-button" class="govuk-button" type="submit" role="button" value="Continue" />
+      <input id="next-button" class="govuk-button" type="submit" role="button" th:value=#{label.continue} />
 
       <div th:if="${noCompanyOption}" class="govuk-body">
         <a class="govuk-link govuk-link--no-visited-state"

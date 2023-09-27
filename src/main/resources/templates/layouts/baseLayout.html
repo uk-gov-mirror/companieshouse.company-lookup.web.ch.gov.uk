@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html lang="en" class="govuk-template" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8"/>
@@ -12,6 +12,10 @@
         rel="icon"
         th:href="@{{cdnUrl}/images/favicon.ico(cdnUrl=${@environment.getProperty('cdn.url')})}"
         type="image/x-icon" />
+    <!--[if !IE 8]><!-->
+    <link th:href="@{{cdnUrl}/stylesheets/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.css(cdnUrl=${@environment.getProperty('cdn.url')})}" rel="stylesheet" type="text/css" />
+    <link th:href="@{{cdnUrl}/stylesheets/extensions/languages-nav.css(cdnUrl=${@environment.getProperty('cdn.url')})}" rel="stylesheet" type="text/css" />
+    <!--<![endif]-->
 </head>
 <body>
 <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=default%2CNumber.isInteger"></script>
