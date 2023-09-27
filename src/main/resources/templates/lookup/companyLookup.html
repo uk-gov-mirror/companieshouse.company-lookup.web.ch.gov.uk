@@ -48,8 +48,11 @@
           </span>
         </summary>
         <div class="govuk-details__text" id="company-number-help-text">
-          Use the <a href="/" title="Go to the companies house homepage" id="companies-house-service"><span>
-              Companies House service</span></a> to find it.
+          <span th:text="#{label.useThe} ">Companies House</span>
+          <a href="/" title="Go to the companies house homepage" id="companies-house-service">
+            <span th:text="'Companies House ' + #{label.service}">Companies House service</span>
+          </a>
+          <span th:text="#{label.toFindIt}">to find it.</span>
         </div>
       </details>
 
