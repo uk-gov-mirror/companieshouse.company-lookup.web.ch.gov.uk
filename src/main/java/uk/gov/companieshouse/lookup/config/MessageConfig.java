@@ -18,7 +18,7 @@ public class MessageConfig implements WebMvcConfigurer {
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 
-        // This will match the resources folder files that begin with message
+        // This will match the resources folder files that begin with 'messages'
         // e.g. messages_wl.properties, messages_fr.properties
         // messageSource.setBasenames("language/messages");
         messageSource.setBasenames("messages");
