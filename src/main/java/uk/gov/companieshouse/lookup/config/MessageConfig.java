@@ -14,36 +14,15 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 public class MessageConfig implements WebMvcConfigurer {
-
-    /*
-    @Autowired
-    private ResourceBundleMessageSource messageSource;
-
-    public Set<String> getSupportedLanguages() {
-        Set<String> languages = new HashSet<>();
-
-        Locale[] locales = messageSource.getSupportedLocales();
-        for (Locale locale : locales) {
-            languages.add(locale.getLanguage());
-        }
-
-        return languages;
-    }
-    */
-
     @Bean("messageSource")
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        //messageSource.setBasenames("language/messages");
+
+        // This will match the resources folder files that begin with message
+        // e.g. messages_wl.properties, messages_fr.properties
+        // messageSource.setBasenames("language/messages");
         messageSource.setBasenames("messages");
         messageSource.setDefaultEncoding("UTF-8");
-
-        //Set<String> languages = new HashSet<>();
-        //Locale[] locales = messageSource.getSupportedLocales();
-        //for (Locale locale : locales) {
-        //    languages.add(locale.getLanguage());
-        //}
-
         return messageSource;
     }
 
