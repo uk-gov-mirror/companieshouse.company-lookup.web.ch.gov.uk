@@ -161,11 +161,11 @@
       <version>${common-web-java.version}</version>
     </dependency>
 
-    <dependency>
+    <!--dependency>
       <groupId>uk.gov.companieshouse</groupId>
       <artifactId>company-lookup-locales</artifactId>
       <version>${company-lookup-locales.version}</version>
-    </dependency>
+    </dependency-->
 
     <!--dependency>
       <groupId>uk.gov.companieshouse</groupId>
