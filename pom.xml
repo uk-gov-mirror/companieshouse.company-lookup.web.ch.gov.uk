@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>company-lookup-poc.web.ch.gov.uk</artifactId>
-  <version>1.0.0</version>
+  <version>unversioned</version>
   <name>company-lookup.web</name>
   <description>Web service to handle company lookup</description>
 
