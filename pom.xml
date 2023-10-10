@@ -9,6 +9,7 @@
   <name>company-lookup.web</name>
   <description>Web service to handle company lookup</description>
 
+
   <parent>
     <groupId>uk.gov.companieshouse</groupId>
     <artifactId>companies-house-parent</artifactId>
