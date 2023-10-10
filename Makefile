@@ -1,3 +1,4 @@
+
 artifact_name       := company-lookup.web.ch.gov.uk
 version             := unversioned
 
