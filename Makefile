@@ -1,4 +1,3 @@
-
 artifact_name       := company-lookup-poc.web.ch.gov.uk
 version             := unversioned
 
