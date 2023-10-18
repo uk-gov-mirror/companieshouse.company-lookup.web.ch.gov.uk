@@ -1,11 +1,8 @@
 package uk.gov.companieshouse.lookup.controller;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
-
-import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
