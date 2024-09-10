@@ -31,14 +31,14 @@ public class CompanyLookupServiceImpl implements CompanyLookupService {
 
         try {
             return mapCompany(apiClient.company().get(uri).execute().getData());
-        } catch (URIValidationException e) {
-            throw new ServiceException("Invalid URI for company resource", e);
-        } catch (ApiErrorResponseException e) {
-            if (e.getStatusCode() == HttpStatus.NOT_FOUND.value()) {
+        } catch (URIValidationException ex) {
+            throw new ServiceException("Invalid URI for company resource", ex);
+        } catch (ApiErrorResponseException ex) {
+            if (ex.getStatusCode() == HttpStatus.NOT_FOUND.value()) {
                 return null;
             }
             throw new ServiceException("Failed to retrieve company profile for " + companyNumber,
-                e);
+                    ex);
         }
     }
 

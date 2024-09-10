@@ -1,22 +1,23 @@
 package uk.gov.companieshouse.lookup.validation;
 
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintValidatorContext;
-import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import jakarta.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
+import java.util.Locale;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.context.MessageSource;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
@@ -44,6 +45,9 @@ public class CompanyNumberValidatorTest {
 
     @Test
     void testCompanyNumberIsBlank() {
+        //when
+        when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(
+                constraintViolationBuilder);
         // Arrange
         when(RequestContextUtils.getLocale(request)).thenReturn(Locale.ENGLISH);
         when(messageSource.getMessage("company.error.number.empty", null, Locale.ENGLISH))
@@ -62,6 +66,9 @@ public class CompanyNumberValidatorTest {
 
     @Test
     void testCompanyNumberSizeMoreThanEight() {
+        //when
+        when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(
+                constraintViolationBuilder);
         // Arrange
         when(RequestContextUtils.getLocale(request)).thenReturn(Locale.ENGLISH);
         when(messageSource.getMessage("company.error.number.length", null, Locale.ENGLISH))
@@ -80,6 +87,9 @@ public class CompanyNumberValidatorTest {
 
     @Test
     void testCompanyNumberSizeLessThanEight() {
+        //when
+        when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(
+                constraintViolationBuilder);
         // Arrange
         when(RequestContextUtils.getLocale(request)).thenReturn(Locale.ENGLISH);
         when(messageSource.getMessage("company.error.number.length", null, Locale.ENGLISH))
@@ -98,6 +108,9 @@ public class CompanyNumberValidatorTest {
 
     @Test
     void testCompanyNumberPattern() {
+        //when
+        when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(
+                constraintViolationBuilder);
         // Arrange
         when(RequestContextUtils.getLocale(request)).thenReturn(Locale.ENGLISH);
         when(messageSource.getMessage("company.error.number.invalid", null, Locale.ENGLISH))
