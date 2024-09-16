@@ -12,6 +12,9 @@
         rel="icon"
         th:href="@{{cdnUrl}/images/favicon.ico(cdnUrl=${@environment.getProperty('cdn.url')})}"
         type="image/x-icon" />
+    <link
+        th:href="@{{cdnUrl}/stylesheets/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.css(cdnUrl=${@environment.getProperty('cdn.url')})}"
+        media="all" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <script th:src="@{{cdnUrl}/javascripts/app/body-js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}" type="text/javascript"></script>
