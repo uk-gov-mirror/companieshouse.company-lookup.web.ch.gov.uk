@@ -2,7 +2,9 @@ package uk.gov.companieshouse.lookup.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UriTemplate;
+
 import uk.gov.companieshouse.lookup.exception.InvalidRequestException;
 import uk.gov.companieshouse.lookup.exception.ServiceException;
 import uk.gov.companieshouse.lookup.model.Company;
@@ -40,18 +43,23 @@ public class CompanyLookupController {
     @GetMapping("/search")
     public String getCompanyLookup(@Valid ForwardUrl forward, BindingResult forwardResult, Model model,
         @RequestParam(name = NO_COMPANY_OPTION, required = false) String noCompanyOption) throws InvalidRequestException {
+
+        CompanyLookup companyLookup = new CompanyLookup();
+        
+        model.addAttribute("companyLookup", companyLookup);
+        model.addAttribute(NO_COMPANY_OPTION, noCompanyOption);
+
         if(forwardResult.hasErrors()) {
             throw new InvalidRequestException(String.format(INVALID_FORWARD_URL, forward.getForward()));
         }
-        CompanyLookup companyLookup = new CompanyLookup();
-        model.addAttribute("companyLookup", companyLookup);
-        model.addAttribute(NO_COMPANY_OPTION, noCompanyOption);
+
         return COMPANY_LOOKUP;
     }
     
     @GetMapping("/no-number")
     public String getCompanyLookupNoCompany(@Valid ForwardUrl forward, BindingResult forwardResult,
         Model model) throws InvalidRequestException {
+        
         if(forwardResult.hasErrors()) {
             throw new InvalidRequestException(String.format(INVALID_FORWARD_URL, forward.getForward()));
         }
@@ -67,6 +75,7 @@ public class CompanyLookupController {
         BindingResult bindingResult, Model model,
         @RequestParam(name = NO_COMPANY_OPTION, required = false) String noCompanyOption)
         throws InvalidRequestException, ServiceException {
+
         if(forwardResult.hasErrors()){
             throw new InvalidRequestException(String.format(INVALID_FORWARD_URL, forward.getForward()));
         }
