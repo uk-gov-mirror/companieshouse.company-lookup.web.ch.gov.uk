@@ -14,13 +14,13 @@ public class CompanyNumberValidator implements ConstraintValidator<CompanyNumber
 
         if (companyNumber == null || companyNumber.equals("")) {
             context.buildConstraintViolationWithTemplate(
-                "{company.error.number.empty}")
+                "company.error.number.empty")
                 .addConstraintViolation();
             return false;
         }
 
         if (companyNumber.length() != 8) {
-            context.buildConstraintViolationWithTemplate("{company.error.number.length}")
+            context.buildConstraintViolationWithTemplate("company.error.number.length")
                 .addConstraintViolation();
             return false;
         }
@@ -29,7 +29,7 @@ public class CompanyNumberValidator implements ConstraintValidator<CompanyNumber
             return true;
         }
         else{
-            context.buildConstraintViolationWithTemplate("{company.error.number.invalid}")
+            context.buildConstraintViolationWithTemplate("company.error.number.invalid")
                     .addConstraintViolation();
             return false;
         }

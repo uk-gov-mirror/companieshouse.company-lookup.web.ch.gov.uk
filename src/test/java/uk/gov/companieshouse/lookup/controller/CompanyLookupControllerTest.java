@@ -3,6 +3,7 @@ package uk.gov.companieshouse.lookup.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import static org.junit.Assert.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -121,33 +122,33 @@ class CompanyLookupControllerTest {
             .andReturn();
     }
 
-    // @Test
-    // @DisplayName("Post Company Lookup - Fail bind error")
-    // void postCompanyLookupBindFail() throws Exception {
-    //     this.mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
-    //         .param(TEST_PATH, "test"))
-    //         .andExpect(status().isOk())
-    //         .andExpect(view().name(TEMPLATE))
-    //         .andExpect(model().attributeExists(MODEL_ATTRIBUTE));
-    // }
+    @Test
+    @DisplayName("Post Company Lookup - Fail bind error")
+    void postCompanyLookupBindFail() throws Exception {
+        this.mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
+            .param(TEST_PATH, "test"))
+            .andExpect(status().isOk())
+            .andExpect(view().name(TEMPLATE))
+            .andExpect(model().attributeExists(MODEL_ATTRIBUTE));
+    }
 
-    // @Test
-    // @DisplayName("Post Company Lookup - Failed to find the company")
-    // void postCompanyLookupFail() throws Exception {
-    //     when(companyLookupService.getCompanyProfile(COMPANY_NUMBER)).thenReturn(null);
-    //     this.mockMvc
-    //         .perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM).param("companyNumber", COMPANY_NUMBER))
-    //         .andExpect(status().isOk())
-    //         .andExpect(view().name(TEMPLATE));
-    // }
+    @Test
+    @DisplayName("Post Company Lookup - Failed to find the company")
+    void postCompanyLookupFail() throws Exception {
+        when(companyLookupService.getCompanyProfile(COMPANY_NUMBER)).thenReturn(null);
+        this.mockMvc
+            .perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM).param("companyNumber", COMPANY_NUMBER))
+            .andExpect(status().isOk())
+            .andExpect(view().name(TEMPLATE));
+    }
 
-    // @Test
-    // @DisplayName("Post Company Lookup - Absolute URL specified")
-    // void postCompanyLookupAbsoluteFail() throws Exception {
-    //     this.mockMvc.perform(post(COMPANY_LOOKUP_URL, "http://0.0.0.0"))
-    //             .andExpect(status().is4xxClientError())
-    //             .andExpect(view().name(ERROR_TEMPLATE));
-    // }
+    @Test
+    @DisplayName("Post Company Lookup - Absolute URL specified")
+    void postCompanyLookupAbsoluteFail() throws Exception {
+        this.mockMvc.perform(post(COMPANY_LOOKUP_URL, "http://0.0.0.0"))
+                .andExpect(status().is4xxClientError())
+                .andExpect(view().name(ERROR_TEMPLATE));
+    }
 
     @Test
     @DisplayName("Test Company Lookup Controller with Language Parameter")
@@ -162,7 +163,6 @@ class CompanyLookupControllerTest {
         String responseContent = result.getResponse().getContentAsString();
 
         Document doc = Jsoup.parse(responseContent);
-        System.out.printf("007 %s", doc.toString());
         
         assertThat(doc.selectFirst("title").text()).contains("Beth yw rhif y cwmni?");
         assertThat(doc.selectFirst("label").text()).contains("Beth yw rhif y cwmni?");
@@ -170,11 +170,78 @@ class CompanyLookupControllerTest {
         assertThat(doc.getElementsByClass("govuk-inset-text").first().text()).contains("Os oes gennych rif cwmni sy'n 7 nod neu lai, nodwch seroau ar y dechrau fel ei fod yn 8 nod i gyd. Er enghraifft, os yw'n 12345, rhowch 00012345");
         assertThat(doc.getElementById("company-number-help-text-link").text()).contains("Sut ydw i'n dod o hyd i rif y cwmni?");
         assertThat(doc.getElementById("company-number-help-text").text()).contains("Gallwch ddod o hyd i hyn trwy chwilio am y cwmni ar gofrestr Tŷ'r Cwmnïau (yn agor mewn tab newydd).");
-        // assertThat(doc.selectFirst("input").text()).contains("Parhau");
-        // assertThat(doc.selectFirst("title").text()).contains("Mae yna broblem");
-        // assertThat(doc.selectFirst("title").text()).contains("Cofnodwch rif y cwmni");
-        // assertThat(doc.selectFirst("title").text()).contains("Rhaid i rif y cwmni fod ag 8 nod. Os yw'n 7 nod neu lai, nodwch seroau ar y dechrau fel ei fod yn 8 nod i gyd.");
-        // assertThat(doc.selectFirst("title").text()).contains("Rhaid i rif cwmni gynnwys rhifau a llythrennau A i Z yn unig");
-        // assertThat(doc.selectFirst("title").text()).contains("Ni allwn ddod o hyd i'r rhif cwmni hwn. Gwiriwch beth rydych wedi cofnodi a geisiwch eto.");
+        assertThat(doc.select("input").get(1).val()).contains("Parhau");
+    }
+
+    @Test
+    @DisplayName("Test Company Lookup Welsh Errors for null company number")
+    void testNullCompanyNumberErrorMessages() throws Exception{
+
+        MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
+        .param("lang", "cy"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+
+        Document doc = Jsoup.parse(responseContent);
+        
+        assertThat(doc.selectFirst("#error-summary-heading").text()).contains("Mae yna broblem");
+        assertTrue(doc.toString().contains("Cofnodwch rif y cwmni"));
+    }
+
+    @Test
+    @DisplayName("Test Company Lookup Welsh Errors for no empty company number")
+    void testEmptyCompanyNumberErrorMessage() throws Exception{
+
+        MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
+        .param("lang", "cy").param("companyNumber", ""))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+
+        Document doc = Jsoup.parse(responseContent);
+        
+        assertThat(doc.selectFirst("#error-summary-heading").text()).contains("Mae yna broblem");
+        assertTrue(doc.toString().contains("Cofnodwch rif y cwmni"));
+    }
+
+    @Test
+    @DisplayName("Test Company Lookup Welsh Errors for wrong length company number")
+    void testCompanyNumberLengthErrorMessage() throws Exception{
+
+        MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
+        .param("lang", "cy").param("companyNumber", "12"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+
+        Document doc = Jsoup.parse(responseContent);
+        
+        assertThat(doc.selectFirst("#error-summary-heading").text()).contains("Mae yna broblem");
+        assertTrue(doc.toString().contains("Rhaid i rif y cwmni fod ag 8 nod. Os yw'n 7 nod neu lai, nodwch seroau ar y dechrau fel ei fod yn 8 nod i gyd."));
+    }
+
+    @Test
+    @DisplayName("Test Company Lookup Welsh Errors for invalid company number")
+    void testInvalidCompanyNumberErrorMessage() throws Exception{
+
+        MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
+        .param("lang", "cy").param("companyNumber", "san-goku"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+
+        Document doc = Jsoup.parse(responseContent);
+        
+        assertThat(doc.selectFirst("#error-summary-heading").text()).contains("Mae yna broblem");
+        assertTrue(doc.toString().contains("Rhaid i rif cwmni gynnwys rhifau a llythrennau A i Z yn unig"));
     }
 }
