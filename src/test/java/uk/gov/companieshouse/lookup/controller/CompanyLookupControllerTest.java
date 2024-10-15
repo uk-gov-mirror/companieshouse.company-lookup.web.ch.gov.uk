@@ -24,13 +24,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
-import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.lookup.internationalisation.InternationalisationConfig;
 import uk.gov.companieshouse.lookup.model.Company;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
-import uk.gov.companieshouse.lookup.thymeleafTestConfig.ThymeleafTestConfig;
 import uk.gov.companieshouse.lookup.validation.ValidationHandler;
 
 @WebMvcTest(CompanyLookupController.class)
@@ -46,8 +44,6 @@ class CompanyLookupControllerTest {
     private static final String MODEL_ATTRIBUTE = "companyLookup";
     private static final String FORWARD_URL_PARAM = "forwardURL";
     private static final String COMPANY_NUMBER = "12345678";
-
-    private SpringTemplateEngine templateEngine = ThymeleafTestConfig.templateEngine();
 
     @Autowired
     private WebApplicationContext webApplicationContext;
