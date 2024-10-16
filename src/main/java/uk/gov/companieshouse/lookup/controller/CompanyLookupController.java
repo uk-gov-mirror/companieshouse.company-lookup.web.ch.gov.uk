@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,11 +33,14 @@ public class CompanyLookupController {
     private static final String INVALID_FORWARD_URL = "Invalid forward URL: [%s]";
     public static final String NO_COMPANY_OPTION = "noCompanyOption";
 
-    @Autowired
-    private CompanyLookupService companyLookupService;
+    private final CompanyLookupService companyLookupService;
 
-    @Autowired
-    private ValidationHandler validationHandler;
+    private final ValidationHandler validationHandler;
+
+    public CompanyLookupController(CompanyLookupService companyLookupService, ValidationHandler validationHandler) {
+        this.companyLookupService = companyLookupService;
+        this.validationHandler = validationHandler;
+    }
 
     @GetMapping("/search")
     public String getCompanyLookup(@Valid ForwardUrl forward, BindingResult forwardResult, Model model,
