@@ -16,7 +16,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import uk.gov.companieshouse.lookup.internationalisation.InternationalisationConfig;
 
-public class InternationalisationConfigTests {
+class InternationalisationConfigTests {
 
     private final InternationalisationConfig config = new InternationalisationConfig();
 
@@ -42,7 +42,7 @@ public class InternationalisationConfigTests {
 
     @Test
     @DisplayName("Test LocaleResolver bean configuration")
-    void testLocaleResolver() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    void testLocaleResolver() throws IllegalArgumentException, SecurityException {
         LocaleResolver localeResolver = config.localeResolver();
         
         assertThat(localeResolver).isInstanceOf(SessionLocaleResolver.class);
@@ -58,7 +58,6 @@ public class InternationalisationConfigTests {
     @DisplayName("Test LocaleChangeInterceptor bean configuration")
     void testLocaleChangeInterceptor() {
         LocaleChangeInterceptor interceptor = config.localeChangeInterceptor();
-        assertThat(interceptor).isNotNull();
         assertThat(interceptor).isInstanceOf(LocaleChangeInterceptor.class);
         assertThat(interceptor.getParamName()).isEqualTo("lang");
     }
