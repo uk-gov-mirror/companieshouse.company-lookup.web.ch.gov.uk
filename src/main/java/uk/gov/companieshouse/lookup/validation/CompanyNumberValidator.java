@@ -1,8 +1,9 @@
 package uk.gov.companieshouse.lookup.validation;
 
+import java.util.regex.Pattern;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.regex.Pattern;
 
 public class CompanyNumberValidator implements ConstraintValidator<CompanyNumberValidation, String> {
 
@@ -13,13 +14,13 @@ public class CompanyNumberValidator implements ConstraintValidator<CompanyNumber
 
         if (companyNumber == null || companyNumber.equals("")) {
             context.buildConstraintViolationWithTemplate(
-                "{company.number.NotEmpty.message}")
+                "company.error.number.empty")
                 .addConstraintViolation();
             return false;
         }
 
         if (companyNumber.length() != 8) {
-            context.buildConstraintViolationWithTemplate("{company.number.Size.message}")
+            context.buildConstraintViolationWithTemplate("company.error.number.length")
                 .addConstraintViolation();
             return false;
         }
@@ -28,7 +29,7 @@ public class CompanyNumberValidator implements ConstraintValidator<CompanyNumber
             return true;
         }
         else{
-            context.buildConstraintViolationWithTemplate("{company.number.pattern.message}")
+            context.buildConstraintViolationWithTemplate("company.error.number.invalid")
                     .addConstraintViolation();
             return false;
         }

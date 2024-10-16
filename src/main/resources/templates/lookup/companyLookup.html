@@ -4,7 +4,7 @@
       layout:decorate="~{layouts/baseLayout}">
 
 <head>
-  <title>What is the company number?</title>
+  <title th:text="#{company.number.title}"></title>
 </head>
 
 <body>
@@ -19,13 +19,11 @@
              th:classappend="${#fields.hasErrors('companyNumber')} ? 'govuk-form-group--error' : ''">
 
           <h1 class="govuk-label-wrapper">
-            <label class="govuk-label govuk-label--l" for="company-number">
-            What is the company number?
+            <label class="govuk-label govuk-label--l" for="company-number" th:text="#{company.number.title}">
             </label>
           </h1>
 
-          <div id="company-lookup-hint" class="govuk-hint">
-            Enter the 8 character company number.
+          <div id="company-lookup-hint" class="govuk-hint" th:text="#{company.enter.number}">
           </div>
 
           <p id="company-lookup-error" class="govuk-error-message">
@@ -39,27 +37,20 @@
                  aria-describedby="company-lookup-hint company-lookup-error" th:field="*{companyNumber}"
                  th:errorclass="govuk-input--error">
         </div>
-        <div class="govuk-inset-text">
-          If you have a company number that's 7 characters or less, enter zeros at the start so that it's
-          8 characters in total. For example, if it's 12345, enter 00012345.
+          <div class="govuk-inset-text" th:utext="#{company.enter.number.info}">
         </div>
 
         <details class="govuk-details" role="group">
           <summary class="govuk-details__summary" role="button" aria-controls="company-number-help-text"
                    aria-expanded="false">
-                <span id="company-number-help-text-link" class="govuk-details__summary-text">
-                  How do I find the company number?
+                <span id="company-number-help-text-link" class="govuk-details__summary-text" th:text="#{company.how.find.number}">
                 </span>
           </summary>
-          <div class="govuk-details__text" id="company-number-help-text">
-            You can find this by searching for the company on the
-            <a class="govuk-link" target="_blank"
-               href="https://find-and-update.company-information.service.gov.uk/">
-              Companies House register (opens in a new tab)</a>.
+          <div class="govuk-details__text" id="company-number-help-text" th:utext="#{company.answer.find.number}">
           </div>
         </details>
 
-        <input id="next-button" class="govuk-button" type="submit" role="button" value="Continue"/>
+        <input id="next-button" class="govuk-button" type="submit" role="button" th:value="#{company.continue}"/>
 
         <div th:if="${noCompanyOption}" class="govuk-body">
           <a class="govuk-link govuk-link--no-visited-state"

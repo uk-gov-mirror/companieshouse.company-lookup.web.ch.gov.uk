@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
 import uk.gov.companieshouse.session.handler.SessionHandler;
 
 @EnableWebSecurity
@@ -20,7 +21,15 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
 
             http.addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class);
-            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+            http.httpBasic().disable()
+                .csrf().disable()
+                .formLogin().disable()
+                .logout().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .and()
+                .authorizeRequests()
+                .anyRequest().permitAll();
         }
     }
 

@@ -1,20 +1,19 @@
 package uk.gov.companieshouse.lookup.validation;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.anyString;
+import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class CompanyNumberValidatorTest {
@@ -41,7 +40,7 @@ public class CompanyNumberValidatorTest {
 
         //then
         verify(context).buildConstraintViolationWithTemplate(stringArgumentCaptor.capture());
-        assertTrue(stringArgumentCaptor.getValue().contains("company.number.NotEmpty.message"));
+        assertTrue(stringArgumentCaptor.getValue().contains("company.error.number.empty"));
         assertFalse(actual);
     }
 
@@ -54,7 +53,7 @@ public class CompanyNumberValidatorTest {
 
         //then
         verify(context).buildConstraintViolationWithTemplate(stringArgumentCaptor.capture());
-        assertTrue(stringArgumentCaptor.getValue().contains("company.number.Size.message"));
+        assertTrue(stringArgumentCaptor.getValue().contains("company.error.number.length"));
         assertFalse(actual);
     }
 
@@ -67,7 +66,7 @@ public class CompanyNumberValidatorTest {
 
         //then
         verify(context).buildConstraintViolationWithTemplate(stringArgumentCaptor.capture());
-        assertTrue(stringArgumentCaptor.getValue().contains("company.number.Size.message"));
+        assertTrue(stringArgumentCaptor.getValue().contains("company.error.number.length"));
         assertFalse(actual);
     }
 
@@ -80,7 +79,7 @@ public class CompanyNumberValidatorTest {
 
         //then
         verify(context).buildConstraintViolationWithTemplate(stringArgumentCaptor.capture());
-        assertTrue(stringArgumentCaptor.getValue().contains("company.number.pattern.message"));
+        assertTrue(stringArgumentCaptor.getValue().contains("company.error.number.invalid"));
         assertFalse(actual);
     }
 
