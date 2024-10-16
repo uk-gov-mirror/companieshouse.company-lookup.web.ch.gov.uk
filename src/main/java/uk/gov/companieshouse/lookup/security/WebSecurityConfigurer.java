@@ -21,7 +21,6 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
 
             http.addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class);
-            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
             http.httpBasic().disable()
                 .csrf().disable()
                 .formLogin().disable()
