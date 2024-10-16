@@ -43,15 +43,14 @@ public class CompanyLookupController {
     @GetMapping("/search")
     public String getCompanyLookup(@Valid ForwardUrl forward, BindingResult forwardResult, Model model,
         @RequestParam(name = NO_COMPANY_OPTION, required = false) String noCompanyOption) throws InvalidRequestException {
-
+            
+        if(forwardResult.hasErrors()) {
+            throw new InvalidRequestException(String.format(INVALID_FORWARD_URL, forward.getForward()));
+        }
         CompanyLookup companyLookup = new CompanyLookup();
         
         model.addAttribute("companyLookup", companyLookup);
         model.addAttribute(NO_COMPANY_OPTION, noCompanyOption);
-
-        if(forwardResult.hasErrors()) {
-            throw new InvalidRequestException(String.format(INVALID_FORWARD_URL, forward.getForward()));
-        }
 
         return COMPANY_LOOKUP;
     }
