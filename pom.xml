@@ -204,6 +204,12 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven-surefire-plugin.version}</version>
+        <configuration>
+          <environmentVariables>
+            <COOKIE_NAME>test</COOKIE_NAME>
+            <COOKIE_DOMAIN>test</COOKIE_DOMAIN>
+          </environmentVariables>
+        </configuration>
         <dependencies>
           <dependency>
             <groupId>org.junit.platform</groupId>

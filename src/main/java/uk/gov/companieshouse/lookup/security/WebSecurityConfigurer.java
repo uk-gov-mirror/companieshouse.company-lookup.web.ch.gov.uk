@@ -20,16 +20,13 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http.addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class);
-            http.httpBasic().disable()
-                .csrf().disable()
-                .formLogin().disable()
-                .logout().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                .and()
-                .authorizeRequests()
-                .anyRequest().permitAll();
+            http.addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class)
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                    .and()
+                    .authorizeRequests()
+                    .anyRequest()
+                    .permitAll();
         }
     }
 
