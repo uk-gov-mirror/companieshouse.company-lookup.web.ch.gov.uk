@@ -9,7 +9,7 @@ locals {
   kms_alias                  = "alias/${var.aws_profile}/environment-services-kms"
   lb_listener_rule_priority  = 53
   lb_listener_paths          = ["/company-lookup/search","/company-lookup"]
-  healthcheck_path           = "/company-accounts-web/healthcheck" #healthcheck path for company accounts web
+  healthcheck_path           = "company-lookup/healthcheck" #healthcheck path for company accounts web
   healthcheck_matcher        = "200"
   s3_config_bucket           = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
   app_environment_filename   = "company-lookup.web.ch.gov.uk.env"
