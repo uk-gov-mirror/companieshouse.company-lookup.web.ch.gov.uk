@@ -4,12 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import static org.junit.Assert.assertTrue;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.when;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -66,7 +64,7 @@ class CompanyLookupControllerTest {
     private ApiErrorResponseException apiErrorResponseException;
 
     @BeforeEach
-    public void setUpBeforeEAch() {
+    public void setUpBeforeEach() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
@@ -222,7 +220,7 @@ class CompanyLookupControllerTest {
         Document doc = Jsoup.parse(responseContent);
         
         assertThat(doc.selectFirst("#error-summary-heading").text()).contains("Mae yna broblem");
-        assertTrue(doc.toString().contains("Rhaid i rif y cwmni fod ag 8 nod. Os yw'n 7 nod neu lai, nodwch seroau ar y dechrau fel ei fod yn 8 nod i gyd."));
+        assertThat(doc.selectFirst("#companyNumber-globalErrorId").text()).contains("Rhaid i rif y cwmni fod ag 8 nod. Os yw'n 7 nod neu lai, nodwch seroau ar y dechrau fel ei fod yn 8 nod i gyd.");
     }
 
     @Test
