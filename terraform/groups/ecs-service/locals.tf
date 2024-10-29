@@ -9,13 +9,14 @@ locals {
   kms_alias                  = "alias/${var.aws_profile}/environment-services-kms"
   lb_listener_rule_priority  = 53
   lb_listener_paths          = ["/company-lookup/search","/company-lookup"]
-  healthcheck_path           = "company-lookup/healthcheck" #healthcheck path for company lookup web
+  healthcheck_path           = "/company-lookup/healthcheck" #healthcheck path for company lookup web
   healthcheck_matcher        = "200"
   s3_config_bucket           = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
   app_environment_filename   = "company-lookup.web.ch.gov.uk.env"
   use_set_environment_files  = var.use_set_environment_files
   application_subnet_ids     = data.aws_subnets.application.ids
   application_subnet_pattern = local.stack_secrets["application_subnet_pattern"]
+  read_only_root_filesystem  = true
 
   stack_secrets   = jsondecode(data.vault_generic_secret.stack_secrets.data_json)
   service_secrets = jsondecode(data.vault_generic_secret.service_secrets.data_json)
