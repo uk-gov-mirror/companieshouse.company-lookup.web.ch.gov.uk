@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title layout:title-pattern="$CONTENT_TITLE"></title>
     <link
+            th:href="@{{cdnUrl}/stylesheets/extensions/languages-nav.css(cdnUrl=${@environment.getProperty('cdn.url')})}"
+            rel="stylesheet" type="text/css">
+    <link
         th:href="@{{cdnUrl}/stylesheets/chs-styles.css(cdnUrl=${@environment.getProperty('cdn.url')})}"
         media="all" rel="stylesheet" type="text/css" />
     <link
@@ -31,6 +34,7 @@
         <div th:replace="fragments/betaBanner :: betaBanner (surveyLink = 'https://www.smartsurvey.co.uk/s/acctsfiling')"></div>
         </section>
         <div th:replace="fragments/backButtonLink :: backButtonLink"></div>
+        <div th:replace="fragments/localesBanner :: localesBanner"></div>
         <main id="content" role="main" class="govuk-main-wrapper">
             <div layout:fragment="content"></div>
         </main>
