@@ -69,6 +69,7 @@ module "ecs-service" {
   use_capacity_provider              = var.use_capacity_provider
   use_fargate                        = var.use_fargate
   fargate_subnets                    = local.application_subnet_ids
+  read_only_root_filesystem          = true
 
   # Cloudwatch
   cloudwatch_alarms_enabled = var.cloudwatch_alarms_enabled

@@ -16,7 +16,6 @@ locals {
   use_set_environment_files  = var.use_set_environment_files
   application_subnet_ids     = data.aws_subnets.application.ids
   application_subnet_pattern = local.stack_secrets["application_subnet_pattern"]
-  read_only_root_filesystem  = true
 
   stack_secrets   = jsondecode(data.vault_generic_secret.stack_secrets.data_json)
   service_secrets = jsondecode(data.vault_generic_secret.service_secrets.data_json)
