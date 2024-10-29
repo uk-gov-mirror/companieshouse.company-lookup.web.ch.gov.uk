@@ -5,12 +5,9 @@ import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,7 +18,6 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.lookup.internationalisation.ChSessionLocaleResolver;
 import uk.gov.companieshouse.lookup.internationalisation.InternationalisationConfig;
-import uk.gov.companieshouse.lookup.internationalisation.SessionProvider;
 import uk.gov.companieshouse.lookup.model.Company;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
 import uk.gov.companieshouse.lookup.validation.ValidationHandler;
@@ -75,7 +71,7 @@ class CompanyLookupControllerTest {
     private ChSessionLocaleResolver chSessionLocaleResolver;
 
     @BeforeEach
-    public void setUpBeforeEAch() {
+    public void setUpBeforeEach() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
@@ -251,7 +247,7 @@ class CompanyLookupControllerTest {
         Document doc = Jsoup.parse(responseContent);
         
         assertThat(doc.selectFirst("#error-summary-heading").text()).contains("Mae yna broblem");
-        assertTrue(doc.toString().contains("Rhaid i rif y cwmni fod ag 8 nod. Os yw'n 7 nod neu lai, nodwch seroau ar y dechrau fel ei fod yn 8 nod i gyd."));
+        assertThat(doc.selectFirst("#companyNumber-globalErrorId").text()).contains("Rhaid i rif y cwmni fod ag 8 nod. Os yw'n 7 nod neu lai, nodwch seroau ar y dechrau fel ei fod yn 8 nod i gyd.");
     }
 
     @Test
