@@ -27,7 +27,13 @@ public class ChSessionLocaleResolver implements LocaleResolver {
 
     @Override
     public Locale resolveLocale(HttpServletRequest httpServletRequest) {
-        return getLocaleFromSession();
+        Locale locale = getLocaleFromSession();
+        httpServletRequest.setAttribute("langInSession", locale != null);
+        if (locale == null) {
+            locale = defaultLocale;
+        }
+
+        return locale;
     }
 
     @Override
@@ -44,13 +50,13 @@ public class ChSessionLocaleResolver implements LocaleResolver {
             Map<String, String> extraData = (Map<String, String>) extraDataObj;
             String languageTag = extraData.get(LANG_SESSION_KEY);
             if (StringUtils.isEmpty(languageTag)) {
-                return defaultLocale;
+                return null;
             }
 
             return Locale.forLanguageTag(languageTag);
         }
 
-        return Locale.getDefault();
+        return null;
     }
 
     private void setLocaleInSession(Locale locale) {

@@ -34,7 +34,9 @@
         <div th:replace="fragments/betaBanner :: betaBanner (surveyLink = 'https://www.smartsurvey.co.uk/s/acctsfiling')"></div>
         </section>
         <div th:replace="fragments/backButtonLink :: backButtonLink"></div>
-        <div th:replace="fragments/localesBanner :: localesBanner"></div>
+        <div th:if="${#httpServletRequest.getAttribute('langInSession')}">
+            <div th:replace="fragments/localesBanner :: localesBanner"></div>
+        </div>
         <main id="content" role="main" class="govuk-main-wrapper">
             <div layout:fragment="content"></div>
         </main>
