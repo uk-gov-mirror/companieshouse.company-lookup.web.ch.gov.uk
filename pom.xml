@@ -29,7 +29,7 @@
     <java-session-handler.version>2.2.0</java-session-handler.version>
     <spring-security-core.version>5.1.11.RELEASE</spring-security-core.version>
     <sdk-manager-java.version>1.3.0-rc4</sdk-manager-java.version>
-    <common-web-java.version>1.5.3</common-web-java.version>
+    <common-web-java.version>1.5.1</common-web-java.version>
     <hamcrest-library-version>2.1</hamcrest-library-version>
     <spring-test.version>5.1.3.RELEASE</spring-test.version>
 
