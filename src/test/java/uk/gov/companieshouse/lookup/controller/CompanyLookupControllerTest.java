@@ -1,13 +1,10 @@
 package uk.gov.companieshouse.lookup.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import static org.junit.Assert.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -15,21 +12,28 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
+import uk.gov.companieshouse.api.error.ApiErrorResponseException;
+import uk.gov.companieshouse.lookup.internationalisation.ChSessionLocaleResolver;
+import uk.gov.companieshouse.lookup.internationalisation.InternationalisationConfig;
+import uk.gov.companieshouse.lookup.model.Company;
+import uk.gov.companieshouse.lookup.service.CompanyLookupService;
+import uk.gov.companieshouse.lookup.validation.ValidationHandler;
+
+import java.util.Locale;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
-
-import uk.gov.companieshouse.api.error.ApiErrorResponseException;
-import uk.gov.companieshouse.lookup.internationalisation.InternationalisationConfig;
-import uk.gov.companieshouse.lookup.model.Company;
-import uk.gov.companieshouse.lookup.service.CompanyLookupService;
-import uk.gov.companieshouse.lookup.validation.ValidationHandler;
 
 @WebMvcTest(CompanyLookupController.class)
 @TestPropertySource("classpath:application-test.properties")
@@ -63,6 +67,9 @@ class CompanyLookupControllerTest {
     @MockBean
     private ApiErrorResponseException apiErrorResponseException;
 
+    @MockBean
+    private ChSessionLocaleResolver chSessionLocaleResolver;
+
     @BeforeEach
     public void setUpBeforeEach() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -71,6 +78,8 @@ class CompanyLookupControllerTest {
     @Test
     @DisplayName("Get Company Lookup - Success")
     void getCompanyLookup() throws Exception {
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(Locale.ENGLISH);
+
         this.mockMvc.perform(get(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM))
             .andDo(print()).andExpect(status().isOk())
             .andExpect(view().name(TEMPLATE))
@@ -80,6 +89,8 @@ class CompanyLookupControllerTest {
     @Test
     @DisplayName("Get Company Lookup - Failed, bad forward URL")
     void getCompanyLookupWhenForwardUrlBad() throws Exception {
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(Locale.ENGLISH);
+
         this.mockMvc.perform(get(COMPANY_LOOKUP_URL, "@:bad-forward-url"))
             .andDo(print())
             .andExpect(status().isBadRequest())
@@ -90,6 +101,8 @@ class CompanyLookupControllerTest {
     @Test
     @DisplayName("Get Company Lookup Without Number - Success")
     void getCompanyLookupWithoutNumber() throws Exception {
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(Locale.ENGLISH);
+
         this.mockMvc.perform(get(COMPANY_LOOKUP_NO_NUMBER_URL, FORWARD_URL_PARAM))
             .andDo(print())
             .andExpect(status().is3xxRedirection())
@@ -100,6 +113,8 @@ class CompanyLookupControllerTest {
     @Test
     @DisplayName("Get Company Lookup Without Number - Failed, bad forward URL")
     void getCompanyLookupWithoutNumberWhenForwardUrlBad() throws Exception {
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(Locale.ENGLISH);
+
         this.mockMvc.perform(get(COMPANY_LOOKUP_NO_NUMBER_URL, "@:bad-forward-url"))
             .andDo(print())
             .andExpect(status().isBadRequest())
@@ -110,6 +125,8 @@ class CompanyLookupControllerTest {
     @Test
     @DisplayName("Post Company Lookup - Success")
     void postCompanyLookup() throws Exception {
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(Locale.ENGLISH);
+
         when(companyLookupService.getCompanyProfile(COMPANY_NUMBER)).thenReturn(company);
         this.mockMvc
             .perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM).param("companyNumber", COMPANY_NUMBER))
@@ -121,6 +138,8 @@ class CompanyLookupControllerTest {
     @Test
     @DisplayName("Post Company Lookup - Fail bind error")
     void postCompanyLookupBindFail() throws Exception {
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(Locale.ENGLISH);
+
         this.mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
             .param(TEST_PATH, "test"))
             .andExpect(status().isOk())
@@ -131,6 +150,8 @@ class CompanyLookupControllerTest {
     @Test
     @DisplayName("Post Company Lookup - Failed to find the company")
     void postCompanyLookupFail() throws Exception {
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(Locale.ENGLISH);
+
         when(companyLookupService.getCompanyProfile(COMPANY_NUMBER)).thenReturn(null);
         this.mockMvc
             .perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM).param("companyNumber", COMPANY_NUMBER))
@@ -141,6 +162,8 @@ class CompanyLookupControllerTest {
     @Test
     @DisplayName("Post Company Lookup - Absolute URL specified")
     void postCompanyLookupAbsoluteFail() throws Exception {
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(Locale.ENGLISH);
+
         this.mockMvc.perform(post(COMPANY_LOOKUP_URL, "http://0.0.0.0"))
                 .andExpect(status().is4xxClientError())
                 .andExpect(view().name(ERROR_TEMPLATE));
@@ -149,6 +172,7 @@ class CompanyLookupControllerTest {
     @Test
     @DisplayName("Test Company Lookup Controller with Language Parameter")
     void testCompanyLookupController() throws Exception{
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(new Locale("cy"));
 
         MvcResult result = mockMvc.perform(get(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
         .param("lang", "cy"))
@@ -172,6 +196,7 @@ class CompanyLookupControllerTest {
     @Test
     @DisplayName("Test Company Lookup Welsh Errors for null company number")
     void testNullCompanyNumberErrorMessages() throws Exception{
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(new Locale("cy"));
 
         MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
         .param("lang", "cy"))
@@ -190,6 +215,7 @@ class CompanyLookupControllerTest {
     @Test
     @DisplayName("Test Company Lookup Welsh Errors for no empty company number")
     void testEmptyCompanyNumberErrorMessage() throws Exception{
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(new Locale("cy"));
 
         MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
         .param("lang", "cy").param("companyNumber", ""))
@@ -208,6 +234,7 @@ class CompanyLookupControllerTest {
     @Test
     @DisplayName("Test Company Lookup Welsh Errors for wrong length company number")
     void testCompanyNumberLengthErrorMessage() throws Exception{
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(new Locale("cy"));
 
         MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
         .param("lang", "cy").param("companyNumber", "12"))
@@ -226,6 +253,7 @@ class CompanyLookupControllerTest {
     @Test
     @DisplayName("Test Company Lookup Welsh Errors for invalid company number")
     void testInvalidCompanyNumberErrorMessage() throws Exception{
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(new Locale("cy"));
 
         MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
         .param("lang", "cy").param("companyNumber", "san-goku"))

@@ -11,34 +11,29 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 @EnableWebMvc
-public class InternationalisationConfig implements WebMvcConfigurer{
-    
+public class InternationalisationConfig implements WebMvcConfigurer {
+
     @Bean
     public MessageSource messageSource(){
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("messages");
+        messageSource.setBasenames("messages", "locales/messages", "locales/common-messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
 
     @Bean
-    public LocaleResolver localeResolver(){
-        SessionLocaleResolver resolver = new SessionLocaleResolver();
-
-        // Set a default locale to be used
-        resolver.setDefaultLocale(Locale.ENGLISH);
-        return resolver;
+    public LocaleResolver localeResolver(ChSessionLocaleResolver chSessionLocaleResolver) {
+        chSessionLocaleResolver.setDefaultLocale(Locale.ENGLISH);
+        return chSessionLocaleResolver;
     }
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
 
-        // setting the lang param to switch languages on request
         interceptor.setParamName("lang");
         return interceptor;
     }
