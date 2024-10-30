@@ -13,8 +13,8 @@ import java.util.Map;
 
 @Component
 public class ChSessionLocaleResolver implements LocaleResolver {
-    public static final String EXTRA_DATA_SESSION_KEY = "extra_data";
-    public static final String LANG_SESSION_KEY = "lang";
+    private static final String EXTRA_DATA_SESSION_KEY = "extra_data";
+    private static final String LANG_SESSION_KEY = "lang";
     private SessionProvider sessionProvider;
     private Locale defaultLocale = Locale.getDefault();
 
