@@ -1,7 +1,6 @@
 package uk.gov.companieshouse.lookup.internationalisation;
 
 import java.util.Locale;
-import java.util.Map;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
