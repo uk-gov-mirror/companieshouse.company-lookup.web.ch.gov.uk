@@ -6,7 +6,6 @@ import uk.gov.companieshouse.session.handler.SessionHandler;
 
 import java.util.Map;
 
-// Having an instance of this class allows to it to be mocked
 @Component
 public class SessionProvider {
     public Map<String, Object> getSessionDataFromContext() {
