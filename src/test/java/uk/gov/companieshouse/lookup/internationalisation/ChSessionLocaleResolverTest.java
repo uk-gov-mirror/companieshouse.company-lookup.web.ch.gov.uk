@@ -6,12 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.companieshouse.session.Session;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +17,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,6 +34,9 @@ class ChSessionLocaleResolverTest {
 
     @Mock
     private HttpServletRequest request;
+
+    @Mock
+    HttpServletResponse response;
 
     private Map<String, Object> sessionData;
     private Map<String, Object> extraData;
@@ -65,6 +65,12 @@ class ChSessionLocaleResolverTest {
         when(sessionProvider.getSessionDataFromContext()).thenReturn(sessionData);
     }
 
+    private void setupSession() {
+        initSessionDataMaps(null);
+        when(sessionProvider.getSessionFromContext()).thenReturn(session);
+        when(session.getData()).thenReturn(sessionData);
+    }
+
     @Test
     @DisplayName("Resolves to the default locale if no locale is in the session")
     void testResolveDefaultLocale() {
@@ -82,5 +88,19 @@ class ChSessionLocaleResolverTest {
 
         Locale welshLocale = new Locale("cy");
         assertEquals(welshLocale, locale);
+    }
+
+    @Test
+    @DisplayName("Locale gets set in session when resolver sets locale")
+    void testSetLocale() {
+        setupSession();
+        Locale welshLocale = new Locale("cy");
+
+        localeResolver.setLocale(request, response, welshLocale);
+
+        String languageTagInSession = (String) extraData.get("lang");
+
+        assertEquals(welshLocale.toLanguageTag(), languageTagInSession);
+        verify(session).store();
     }
 }
