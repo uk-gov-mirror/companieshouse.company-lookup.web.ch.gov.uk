@@ -15,13 +15,13 @@
                     <a th:if="${#messages.msgOrNull(e.fieldName) != null}"
                        th:href="'#' + ${e.fieldName} + '-errorId'"
                        th:id="${e.fieldName} + '-globalErrorId'"
-                       th:text="#{${e.fieldName}} + ' ' + ${#strings.unCapitalize(${e.message})}">
+                       th:text="${e.fieldName} + ' ' + ${#strings.unCapitalize(e.message)}">
                     </a>
                     <!-- If fieldName message property is null, just display message -->
                     <a th:if="${#messages.msgOrNull(e.fieldName) == null}"
                        th:href="'#' + ${e.fieldName} + '-errorId'"
                        th:id="${e.fieldName} + '-globalErrorId'"
-                       th:text="#{${e.message}}">
+                       th:text="${e.message}">
                     </a>
                 </div>
             </li>
