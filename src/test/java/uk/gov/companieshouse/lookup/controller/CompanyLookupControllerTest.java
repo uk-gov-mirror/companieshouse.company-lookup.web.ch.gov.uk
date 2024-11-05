@@ -1,10 +1,17 @@
 package uk.gov.companieshouse.lookup.controller;
 
+import java.util.Locale;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -12,28 +19,22 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
-import uk.gov.companieshouse.api.error.ApiErrorResponseException;
-import uk.gov.companieshouse.lookup.internationalisation.ChSessionLocaleResolver;
-import uk.gov.companieshouse.lookup.internationalisation.InternationalisationConfig;
-import uk.gov.companieshouse.lookup.model.Company;
-import uk.gov.companieshouse.lookup.service.CompanyLookupService;
-import uk.gov.companieshouse.lookup.validation.ValidationHandler;
-
-import java.util.Locale;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
+
+import uk.gov.companieshouse.api.error.ApiErrorResponseException;
+import uk.gov.companieshouse.lookup.internationalisation.ChSessionLocaleResolver;
+import uk.gov.companieshouse.lookup.internationalisation.InternationalisationConfig;
+import uk.gov.companieshouse.lookup.model.Company;
+import uk.gov.companieshouse.lookup.service.CompanyLookupService;
+import uk.gov.companieshouse.lookup.validation.ValidationHandler;
 
 @WebMvcTest(CompanyLookupController.class)
 @TestPropertySource("classpath:application-test.properties")
@@ -69,6 +70,11 @@ class CompanyLookupControllerTest {
 
     @MockBean
     private ChSessionLocaleResolver chSessionLocaleResolver;
+
+    @BeforeAll
+    public static void setUp() {
+        System.setProperty("COOKIE_NAME", "__SID");
+    }
 
     @BeforeEach
     public void setUpBeforeEach() {
@@ -267,5 +273,40 @@ class CompanyLookupControllerTest {
         
         assertThat(doc.selectFirst("#error-summary-heading").text()).contains("Mae yna broblem");
         assertTrue(doc.toString().contains("Rhaid i rif cwmni gynnwys rhifau a llythrennau A i Z yn unig"));
+    }
+
+    @Test
+    @DisplayName("Test Company Lookup for Welsh company name")
+    void testWelshCompanyName() throws Exception{
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(new Locale("cy"));
+
+        MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
+        .param("lang", "cy"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+
+        Document doc = Jsoup.parse(responseContent);
+
+        assertTrue(doc.selectFirst(".govuk-header__logotype-text").text().contains("Ty'r Cwmniau"));
+    }
+
+    @Test
+    @DisplayName("Test Company Lookup for English company name")
+    void testEnglishCompanyName() throws Exception{
+        when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(new Locale("en"));
+
+        MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+
+        Document doc = Jsoup.parse(responseContent);
+
+        assertTrue(doc.selectFirst(".govuk-header__logotype-text").text().contains("Companies House"));
     }
 }
