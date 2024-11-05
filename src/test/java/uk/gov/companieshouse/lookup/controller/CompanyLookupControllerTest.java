@@ -276,8 +276,8 @@ class CompanyLookupControllerTest {
     }
 
     @Test
-    @DisplayName("Test Company Lookup for Welsh company name")
-    void testWelshCompanyName() throws Exception{
+    @DisplayName("Test Company Lookup for Welsh header and footer")
+    void testWelshHeaderFooter() throws Exception{
         when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(new Locale("cy"));
 
         MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
@@ -291,11 +291,16 @@ class CompanyLookupControllerTest {
         Document doc = Jsoup.parse(responseContent);
 
         assertTrue(doc.selectFirst(".govuk-header__logotype-text").text().contains("Ty'r Cwmniau"));
+        assertTrue(doc.selectFirst("#policies-link").text().contains("Polisïau"));
+        assertTrue(doc.selectFirst("#cookies-link").text().contains("Cwcis"));
+        assertTrue(doc.selectFirst("#contact-us-link").text().contains("Cysylltu â ni"));
+        assertTrue(doc.selectFirst("#accessibility-statement-link").text().contains("Datganiad hygyrchedd"));
+        assertTrue(doc.selectFirst("#developer-link").text().contains("Datblygwyr"));
     }
 
     @Test
-    @DisplayName("Test Company Lookup for English company name")
-    void testEnglishCompanyName() throws Exception{
+    @DisplayName("Test Company Lookup for English header and footer")
+    void testEnglishHeaderFooter() throws Exception{
         when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(new Locale("en"));
 
         MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM))
@@ -308,5 +313,10 @@ class CompanyLookupControllerTest {
         Document doc = Jsoup.parse(responseContent);
 
         assertTrue(doc.selectFirst(".govuk-header__logotype-text").text().contains("Companies House"));
+        assertTrue(doc.selectFirst("#policies-link").text().contains("Policies"));
+        assertTrue(doc.selectFirst("#cookies-link").text().contains("Cookies"));
+        assertTrue(doc.selectFirst("#contact-us-link").text().contains("Contact us"));
+        assertTrue(doc.selectFirst("#accessibility-statement-link").text().contains("Accessibility Statement"));
+        assertTrue(doc.selectFirst("#developer-link").text().contains("Developers"));
     }
 }

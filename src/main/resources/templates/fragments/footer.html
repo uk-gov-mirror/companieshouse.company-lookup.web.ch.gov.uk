@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Footer</title>
+    </head>
+    <body>
+        <footer th:fragment="footer" class="group js-footer" id="footer" role="contentinfo">
+            <nav>
+                <div>
+                    <ul>
+                        <li><a id="policies-link" href="http://resources.companieshouse.gov.uk/serviceInformation.shtml" th:text="#{company.footer.policies}">Policies</a></li>
+                        <li><a id="cookies-link" th:href="@{{chsUrl}/help/cookies(chsUrl=${@environment.getProperty('chs.url')})}" th:text="#{company.footer.cookies}">Cookies</a></li>
+                        <li><a id="contact-us-link" th:href="@{{chsUrl}/help/contact-us(chsUrl=${@environment.getProperty('chs.url')})}" th:text="#{company.footer.contact.us}">Contact us</a></li>
+                        <li><a id="accessibility-statement-link" th:href="@{{chsUrl}/help/accessibility-statement(chsUrl=${@environment.getProperty('chs.url')})}" th:text="#{company.footer.accessibility.statement}">Accessibility statement</a></li>
+                        <li><a id="developer-link" th:href="@{{developerUrl}/api/docs/(developerUrl=${@environment.getProperty('developer.url')})}" th:text="#{company.footer.developers}">Developers</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </footer>
+    </body>
+</html>
