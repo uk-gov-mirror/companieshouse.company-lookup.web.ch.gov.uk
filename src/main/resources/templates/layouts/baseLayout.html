@@ -28,7 +28,7 @@
 <a href="#content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 
 <div class="entire-wrapper">
-    <div th:replace="fragments/header :: header"></div>
+    <div th:replace="fragments/header :: header(#{company.header.title})"></div>
     <div class="govuk-width-container">
         <section aria-label="beta banner">
         <div th:replace="fragments/betaBanner :: betaBanner (surveyLink = 'https://www.smartsurvey.co.uk/s/acctsfiling')"></div>

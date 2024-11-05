@@ -4,13 +4,13 @@
         <title>Header</title>
     </head>
     <body class="govuk-template__body">
-        <th:block th:fragment="header">
+        <th:block th:fragment="header(companiesHouseText)">
             <header role="banner" id="global-header" class="govuk-header">
                 <div class="govuk-header__container govuk-width-container">
                     <div class="header-global">
                         <div class="govuk-header__logo">
                             <a href="/" title="Go to the companies house homepage" id="logo" class="govuk-header__link govuk-header__link--homepage">
-                                <span class="govuk-header__logotype-text"> Companies House </span>
+                                <span class="govuk-header__logotype-text"  th:text="${companiesHouseText}"> Companies House </span>
                             </a>
                         </div>
                     </div>

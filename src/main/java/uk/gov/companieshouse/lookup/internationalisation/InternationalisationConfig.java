@@ -38,7 +38,6 @@ public class InternationalisationConfig implements WebMvcConfigurer {
         return interceptor;
     }
 
-    // Adding localChangeInterceptor created above
     @Override
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(localeChangeInterceptor());
