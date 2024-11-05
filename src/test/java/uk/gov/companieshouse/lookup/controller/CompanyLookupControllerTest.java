@@ -294,7 +294,6 @@ class CompanyLookupControllerTest {
         assertTrue(doc.selectFirst("#policies-link").text().contains("Polisïau"));
         assertTrue(doc.selectFirst("#cookies-link").text().contains("Cwcis"));
         assertTrue(doc.selectFirst("#contact-us-link").text().contains("Cysylltu â ni"));
-        assertTrue(doc.selectFirst("#accessibility-statement-link").text().contains("Datganiad hygyrchedd"));
         assertTrue(doc.selectFirst("#developer-link").text().contains("Datblygwyr"));
     }
 
@@ -316,7 +315,6 @@ class CompanyLookupControllerTest {
         assertTrue(doc.selectFirst("#policies-link").text().contains("Policies"));
         assertTrue(doc.selectFirst("#cookies-link").text().contains("Cookies"));
         assertTrue(doc.selectFirst("#contact-us-link").text().contains("Contact us"));
-        assertTrue(doc.selectFirst("#accessibility-statement-link").text().contains("Accessibility Statement"));
         assertTrue(doc.selectFirst("#developer-link").text().contains("Developers"));
     }
 }
