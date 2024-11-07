@@ -31,7 +31,7 @@
     <div th:replace="fragments/header :: header(#{company.header.title})"></div>
     <div class="govuk-width-container">
         <section aria-label="beta banner">
-        <div th:replace="fragments/betaBanner :: betaBanner (surveyLink = 'https://www.smartsurvey.co.uk/s/acctsfiling')"></div>
+        <div th:replace="fragments/betaBanner :: betaBanner"></div>
         </section>
         <div th:replace="fragments/backButtonLink :: backButtonLink"></div>
         <div th:if="${#httpServletRequest.getAttribute('langInSession')}">

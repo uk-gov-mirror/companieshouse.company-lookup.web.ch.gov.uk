@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <div th:fragment="betaBanner" class="govuk-phase-banner">
+            <p class="govuk-phase-banner__content">
+                <strong class="govuk-tag govuk-phase-banner__content__tag">BETA</strong>
+                <span class="govuk-phase-banner__text" th:utext="#{company.banner.text}">
+                </span>
+            </p>
+        </div>
+    </body>
+</html>
