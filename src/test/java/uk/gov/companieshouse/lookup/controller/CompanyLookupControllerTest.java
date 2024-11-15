@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -14,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -245,7 +247,7 @@ class CompanyLookupControllerTest {
 
     @Test
     @DisplayName("Test Company Lookup Welsh Errors for wrong length company number")
-    void testCompanyNumberLengthErrorMessage() throws Exception{
+    void testCompanyNumberLengthErrorMessage() throws Exception {
         when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(new Locale("cy"));
 
         MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
@@ -260,7 +262,7 @@ class CompanyLookupControllerTest {
 
         assertThat(doc.selectFirst("#error-summary-heading").text()).contains("Mae yna broblem");
         assertThat(doc.selectFirst("#companyNumber-globalErrorId").text()).contains(
-                "??Rhaid i rif y cwmni fod ag 8 nod. Os yw''n 7 nod neu lai, nodwch seroau ar y dechrau fel ei fod yn 8 nod i gyd._cy??");
+                "Rhaid i rif y cwmni fod ag 8 nod. Os yw''n 7 nod neu lai, nodwch seroau ar y dechrau fel ei fod yn 8 nod i gyd.");
     }
 
     @Test

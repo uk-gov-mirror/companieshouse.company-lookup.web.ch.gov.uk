@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
 import uk.gov.companieshouse.session.Session;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Locale;
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public class ChSessionLocaleResolver implements LocaleResolver {
     @Override
     public Locale resolveLocale(HttpServletRequest httpServletRequest) {
         Locale locale = getLocaleFromSession();
-        httpServletRequest.setAttribute("langInSession", locale != null);
+        httpServletRequest.setAttribute("onWelshJourney", locale != null);
         if (locale == null) {
             locale = defaultLocale;
         }

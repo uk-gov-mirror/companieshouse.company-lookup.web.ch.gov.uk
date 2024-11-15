@@ -22,9 +22,7 @@ public class WebSecurityConfigurer {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**"))
+        return http.authorizeHttpRequests(auth -> auth.requestMatchers("/**").permitAll())
                 .addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class)
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
