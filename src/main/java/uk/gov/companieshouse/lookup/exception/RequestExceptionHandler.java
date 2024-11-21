@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.lookup.exception;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -7,8 +8,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.lookup.Application;
-
-import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 public class RequestExceptionHandler {

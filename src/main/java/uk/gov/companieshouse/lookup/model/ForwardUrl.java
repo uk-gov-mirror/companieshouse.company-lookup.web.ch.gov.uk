@@ -1,9 +1,8 @@
 package uk.gov.companieshouse.lookup.model;
 
 
-import uk.gov.companieshouse.lookup.validation.RelativeUrl;
-
 import java.util.Objects;
+import uk.gov.companieshouse.lookup.validation.RelativeUrl;
 
 public class ForwardUrl {
 

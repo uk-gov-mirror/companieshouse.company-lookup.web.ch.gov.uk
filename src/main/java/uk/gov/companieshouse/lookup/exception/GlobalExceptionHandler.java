@@ -1,6 +1,6 @@
 package uk.gov.companieshouse.lookup.exception;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,7 +14,13 @@ public class GlobalExceptionHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(Application.APPLICATION_NAME_SPACE);
 
-
+    /**
+     * Handle exception string.
+     *
+     * @param request the request
+     * @param ex      the ex
+     * @return the string
+     */
     @ExceptionHandler({RuntimeException.class, ServiceException.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleException(HttpServletRequest request, Exception ex) {

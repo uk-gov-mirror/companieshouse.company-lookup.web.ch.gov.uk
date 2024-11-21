@@ -1,9 +1,5 @@
 package uk.gov.companieshouse.lookup.exception;
 
-/**
- * The class {@code ServiceException} is a form of {@code Exception} that should be used at the
- * service layer to abstract lower level exceptions from being propagated up the call stack.
- */
 public class ServiceException extends Exception {
 
     /**

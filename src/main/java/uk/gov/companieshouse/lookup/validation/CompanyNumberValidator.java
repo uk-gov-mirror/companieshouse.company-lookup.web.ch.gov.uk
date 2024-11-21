@@ -1,11 +1,11 @@
 package uk.gov.companieshouse.lookup.validation;
 
-import java.util.Locale;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
+import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
