@@ -60,6 +60,10 @@ build:
 .PHONY: test
 test: test-unit
 
+.PHONY: test-integration
+test-integration: clean
+	mvn verify -Dskip.unit.tests=true
+
 .PHONY: test-unit
 test-unit: clean
 	mvn test
