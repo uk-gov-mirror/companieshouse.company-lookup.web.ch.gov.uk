@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 @Configuration
-public class InternationalisationConfig implements WebMvcConfigurer {
+public class InternationalisationConfig {
 
     @Bean
     public MessageSource messageSource(){
@@ -34,10 +34,5 @@ public class InternationalisationConfig implements WebMvcConfigurer {
 
         interceptor.setParamName("lang");
         return interceptor;
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry){
-        registry.addInterceptor(localeChangeInterceptor());
     }
 }
