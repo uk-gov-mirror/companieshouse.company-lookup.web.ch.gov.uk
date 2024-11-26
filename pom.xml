@@ -19,7 +19,7 @@
   <properties>
     <!-- Spring/Java/Maven -->
     <java.version>21</java.version>
-    <spring-boot-dependencies.version>3.3.5</spring-boot-dependencies.version>
+    <spring-boot-dependencies.version>3.4.0</spring-boot-dependencies.version>
 
     <thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
 
@@ -54,16 +54,6 @@
 
   <dependencyManagement>
     <dependencies>
-       <!-- required while spring boot version pulls in spring dependencies with CVE-2024-38820 -->
-            <!-- order matters here: make sure this is placed above spring-boot-dependencies -->
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-framework-bom</artifactId>
-        <version>${spring-override.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
