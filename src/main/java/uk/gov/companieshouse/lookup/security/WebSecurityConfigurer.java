@@ -6,8 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import uk.gov.companieshouse.session.handler.SessionHandler;
+import uk.gov.companieshouse.csrf.config.ChsCsrfMitigationHttpSecurityBuilder;
 
 @EnableWebSecurity
 @Configuration
@@ -22,10 +21,11 @@ public class WebSecurityConfigurer {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(auth -> auth.requestMatchers("/**").permitAll())
-                .addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class)
-                .sessionManagement(
-                        session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+        return ChsCsrfMitigationHttpSecurityBuilder.configureWebCsrfMitigations(
+                        http.authorizeHttpRequests(auth -> auth.requestMatchers("/**").permitAll())
+                                .sessionManagement(
+                                        session -> session.sessionCreationPolicy(
+                                                SessionCreationPolicy.ALWAYS)))
                 .build();
     }
 }
