@@ -31,16 +31,13 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <jib-maven-plugin.version>3.4.2</jib-maven-plugin.version>
 
-    <!--Overriding version to remove CVE-->
-    <spring-override.version>6.1.14</spring-override.version>
-
     <!-- Companies House -->
     <api-sdk-manager-java-library.version>3.0.5</api-sdk-manager-java-library.version>
     <api-sdk-java.version>6.0.9</api-sdk-java.version>
     <structured-logging.version>3.0.9</structured-logging.version>
     <java-session-handler.version>4.1.0</java-session-handler.version>
     <sdk-manager-java.version>3.0.9</sdk-manager-java.version>
-    <common-web-java.version>3.0.32</common-web-java.version>
+    <common-web-java.version>3.0.33</common-web-java.version>
     <web-security-java.version>3.1.0</web-security-java.version>
 
     <!-- Security -->

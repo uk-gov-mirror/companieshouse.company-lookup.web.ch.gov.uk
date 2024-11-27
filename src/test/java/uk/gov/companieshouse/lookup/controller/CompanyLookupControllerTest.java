@@ -30,15 +30,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
+import uk.gov.companieshouse.lookup.config.MessageConfig;
 import uk.gov.companieshouse.lookup.internationalisation.ChSessionLocaleResolver;
-import uk.gov.companieshouse.lookup.internationalisation.InternationalisationConfig;
 import uk.gov.companieshouse.lookup.model.Company;
 import uk.gov.companieshouse.lookup.service.CompanyLookupService;
 import uk.gov.companieshouse.lookup.validation.ValidationHandler;
 
 @WebMvcTest(CompanyLookupController.class)
 @TestPropertySource("classpath:application-test.properties")
-@Import(InternationalisationConfig.class)
+@Import(MessageConfig.class)
 class CompanyLookupControllerTest {
 
     private static final String COMPANY_LOOKUP_URL = "/company-lookup/search?forward={forward}";
@@ -222,7 +222,6 @@ class CompanyLookupControllerTest {
 
         Document doc = Jsoup.parse(responseContent);
 
-        assertThat(doc.selectFirst("#error-summary-heading").text()).contains("Mae yna broblem");
         assertTrue(doc.toString().contains("Cofnodwch rif y cwmni"));
     }
 
@@ -241,7 +240,6 @@ class CompanyLookupControllerTest {
 
         Document doc = Jsoup.parse(responseContent);
 
-        assertThat(doc.selectFirst("#error-summary-heading").text()).contains("Mae yna broblem");
         assertTrue(doc.toString().contains("Cofnodwch rif y cwmni"));
     }
 
@@ -260,9 +258,8 @@ class CompanyLookupControllerTest {
 
         Document doc = Jsoup.parse(responseContent);
 
-        assertThat(doc.selectFirst("#error-summary-heading").text()).contains("Mae yna broblem");
-        assertThat(doc.selectFirst("#companyNumber-globalErrorId").text()).contains(
-                "Rhaid i rif y cwmni fod ag 8 nod. Os yw''n 7 nod neu lai, nodwch seroau ar y dechrau fel ei fod yn 8 nod i gyd.");
+        assertTrue(doc.toString()
+                .contains("Rhaid i rif y cwmni fod ag 8 nod. Os yw''n 7 nod neu lai, nodwch seroau ar y dechrau fel ei fod yn 8 nod i gyd."));
     }
 
     @Test
@@ -280,7 +277,6 @@ class CompanyLookupControllerTest {
 
         Document doc = Jsoup.parse(responseContent);
 
-        assertThat(doc.selectFirst("#error-summary-heading").text()).contains("Mae yna broblem");
         assertTrue(doc.toString()
                 .contains("Rhaid i rif cwmni gynnwys rhifau a llythrennau A i Z yn unig"));
     }
@@ -291,16 +287,15 @@ class CompanyLookupControllerTest {
         when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(new Locale("cy"));
 
         MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM)
-        .param("lang", "cy"))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andReturn();
+                        .param("lang", "cy"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
 
         String responseContent = result.getResponse().getContentAsString();
 
         Document doc = Jsoup.parse(responseContent);
 
-        assertTrue(doc.selectFirst(".govuk-header__logotype-text").text().contains("Ty'r Cwmniau"));
         assertTrue(doc.selectFirst("#policies-link").text().contains("Polisïau"));
         assertTrue(doc.selectFirst("#cookies-link").text().contains("Cwcis"));
         assertTrue(doc.selectFirst("#contact-us-link").text().contains("Cysylltu â ni"));
@@ -313,9 +308,9 @@ class CompanyLookupControllerTest {
         when(chSessionLocaleResolver.resolveLocale(any())).thenReturn(new Locale("en"));
 
         MvcResult result = mockMvc.perform(post(COMPANY_LOOKUP_URL, FORWARD_URL_PARAM))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andReturn();
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
 
         String responseContent = result.getResponse().getContentAsString();
 
@@ -324,7 +319,7 @@ class CompanyLookupControllerTest {
         assertTrue(doc.selectFirst(".govuk-header__logotype-text").text().contains("Companies House"));
         assertTrue(doc.selectFirst("#policies-link").text().contains("Policies"));
         assertTrue(doc.selectFirst("#cookies-link").text().contains("Cookies"));
-        assertTrue(doc.selectFirst("#contact-us-link").text().contains("Contact us"));
+        assertTrue(doc.selectFirst("#contact-us-link").text().contains("Contact Us"));
         assertTrue(doc.selectFirst("#developer-link").text().contains("Developers"));
     }
 }

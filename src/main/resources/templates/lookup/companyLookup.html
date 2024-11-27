@@ -13,8 +13,6 @@
     <div class="govuk-grid-column-two-thirds">
       <form id="lookup-form" th:action="@{''}" th:object="${companyLookup}" class="form" method="post">
 
-        <div th:replace="fragments/errors :: errors"></div>
-
         <div class="govuk-form-group"
              th:classappend="${#fields.hasErrors('companyNumber')} ? 'govuk-form-group--error' : ''">
 
