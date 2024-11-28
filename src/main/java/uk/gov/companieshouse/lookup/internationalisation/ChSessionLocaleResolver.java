@@ -23,8 +23,6 @@ public class ChSessionLocaleResolver implements LocaleResolver {
         this.sessionProvider = sessionProvider;
     }
 
-    public ChSessionLocaleResolver() {}
-
     @Override
     public Locale resolveLocale(HttpServletRequest httpServletRequest) {
         Locale locale = getLocaleFromSession();
