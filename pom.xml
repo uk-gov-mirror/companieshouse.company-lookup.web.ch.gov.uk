@@ -38,7 +38,7 @@
     <java-session-handler.version>4.1.0</java-session-handler.version>
     <sdk-manager-java.version>3.0.9</sdk-manager-java.version>
     <common-web-java.version>3.0.38</common-web-java.version>
-    <web-security-java.version>3.1.0</web-security-java.version>
+    <web-security-java.version>3.1.2</web-security-java.version>
 
     <!-- Security -->
     <spring-security-core.version>6.3.4</spring-security-core.version>
@@ -152,6 +152,13 @@
         <groupId>uk.gov.companieshouse</groupId>
         <artifactId>web-security-java</artifactId>
         <version>${web-security-java.version}</version>
+      <exclusions>
+        <!-- CVE-2024-57699 -->
+        <exclusion>
+          <groupId>net.minidev</groupId>
+          <artifactId>json-smart</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Test scope -->
