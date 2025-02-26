@@ -37,7 +37,7 @@
     <structured-logging.version>3.0.9</structured-logging.version>
     <java-session-handler.version>4.1.0</java-session-handler.version>
     <sdk-manager-java.version>3.0.9</sdk-manager-java.version>
-    <common-web-java.version>3.0.33</common-web-java.version>
+    <common-web-java.version>3.0.38</common-web-java.version>
     <web-security-java.version>3.1.0</web-security-java.version>
 
     <!-- Security -->
@@ -141,6 +141,12 @@
       <groupId>uk.gov.companieshouse</groupId>
       <artifactId>structured-logging</artifactId>
       <version>${structured-logging.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
         <groupId>uk.gov.companieshouse</groupId>
