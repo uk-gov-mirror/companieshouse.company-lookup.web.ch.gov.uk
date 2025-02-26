@@ -259,7 +259,7 @@ class CompanyLookupControllerTest {
         Document doc = Jsoup.parse(responseContent);
 
         assertTrue(doc.toString()
-                .contains("Rhaid i rif y cwmni fod ag 8 nod. Os yw''n 7 nod neu lai, nodwch seroau ar y dechrau fel ei fod yn 8 nod i gyd."));
+                .contains("Rhaid i rif y cwmni fod ag 8 nod. Os yw'n 7 nod neu lai, nodwch seroau ar y dechrau fel ei fod yn 8 nod i gyd."));
     }
 
     @Test
