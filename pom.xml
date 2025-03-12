@@ -19,35 +19,35 @@
   <properties>
     <!-- Spring/Java/Maven -->
     <java.version>21</java.version>
-    <spring-boot-dependencies.version>3.4.0</spring-boot-dependencies.version>
+    <spring-boot-dependencies.version>3.4.3</spring-boot-dependencies.version>
 
-    <thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
+    <thymeleaf-layout-dialect.version>3.4.0</thymeleaf-layout-dialect.version>
 
-    <spring-boot-maven-plugin.version>3.3.4</spring-boot-maven-plugin.version>
-    <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-    <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
+    <spring-boot-maven-plugin.version>3.4.3</spring-boot-maven-plugin.version>
+    <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
     <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <jib-maven-plugin.version>3.4.2</jib-maven-plugin.version>
+    <jib-maven-plugin.version>3.4.4</jib-maven-plugin.version>
 
     <!-- Companies House -->
-    <api-sdk-manager-java-library.version>3.0.5</api-sdk-manager-java-library.version>
-    <api-sdk-java.version>6.0.9</api-sdk-java.version>
-    <structured-logging.version>3.0.9</structured-logging.version>
-    <java-session-handler.version>4.1.0</java-session-handler.version>
-    <sdk-manager-java.version>3.0.9</sdk-manager-java.version>
+    <api-sdk-manager-java-library.version>3.0.6</api-sdk-manager-java-library.version>
+    <api-sdk-java.version>6.0.39</api-sdk-java.version>
+    <structured-logging.version>3.0.26</structured-logging.version>
+    <java-session-handler.version>4.1.4</java-session-handler.version>
+    <sdk-manager-java.version>3.0.10</sdk-manager-java.version>
     <common-web-java.version>3.0.38</common-web-java.version>
-    <web-security-java.version>3.1.2</web-security-java.version>
+    <web-security-java.version>3.1.4</web-security-java.version>
 
     <!-- Security -->
-    <spring-security-core.version>6.3.4</spring-security-core.version>
-    <spring-security-web.version>6.3.4</spring-security-web.version>
-    <spring-security-config.version>6.3.4</spring-security-config.version>
+    <spring-security-core.version>6.4.3</spring-security-core.version>
+    <spring-security-web.version>6.4.3</spring-security-web.version>
+    <spring-security-config.version>6.4.3</spring-security-config.version>
 
     <!-- Test -->
-    <jsoup.version>1.18.1</jsoup.version>
-    <assertj-core.version>3.26.3</assertj-core.version>
+    <jsoup.version>1.19.1</jsoup.version>
+    <assertj-core.version>3.27.3</assertj-core.version>
     </properties>
 
   <dependencyManagement>
