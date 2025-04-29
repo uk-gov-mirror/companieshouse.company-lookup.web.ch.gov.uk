@@ -19,11 +19,11 @@
   <properties>
     <!-- Spring/Java/Maven -->
     <java.version>21</java.version>
-    <spring-boot-dependencies.version>3.4.3</spring-boot-dependencies.version>
+    <spring-boot-dependencies.version>3.4.5</spring-boot-dependencies.version>
 
     <thymeleaf-layout-dialect.version>3.4.0</thymeleaf-layout-dialect.version>
 
-    <spring-boot-maven-plugin.version>3.4.3</spring-boot-maven-plugin.version>
+    <spring-boot-maven-plugin.version>3.4.5</spring-boot-maven-plugin.version>
     <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
     <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
     <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
@@ -35,7 +35,7 @@
     <api-sdk-manager-java-library.version>3.0.6</api-sdk-manager-java-library.version>
     <api-sdk-java.version>6.0.39</api-sdk-java.version>
     <structured-logging.version>3.0.26</structured-logging.version>
-    <java-session-handler.version>4.1.4</java-session-handler.version>
+    <java-session-handler.version>4.1.7</java-session-handler.version>
     <sdk-manager-java.version>3.0.10</sdk-manager-java.version>
     <common-web-java.version>3.0.38</common-web-java.version>
     <web-security-java.version>3.1.4</web-security-java.version>
