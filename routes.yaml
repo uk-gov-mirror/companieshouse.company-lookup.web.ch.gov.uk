@@ -1,6 +1,0 @@
-app_name: company-lookup.web.ch.gov.uk
-group: web
-
-weight: 900
-routes:
-   1: /company-lookup*
