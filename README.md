@@ -17,6 +17,14 @@ Name                   | Description                                            
 ENVIRONMENT            | The URL for the environment you are currently deploying to.                                                  | ✓
 FORWARDING_URL         | The path the user will be forwarded to after the search has been completed and the normal journey continues. | ✓
 
+### Endpoints
+
+ | Method   | Path                                                                    | Description                                                   |
+ | -------- | ----------------------------------------------------------------------- | ------------------------------------------------------------- |
+ | GET      | `/company-lookup/search`                                                | Company lookup page                                           |
+ | POST     | `/company-lookup/search`                                                | Company lookup page                                           |
+ | GET      | `/company-lookup/no-number`                                             | Company lookup no company page                                |
+
 ## Terraform ECS
 
 ### What does this code do?
