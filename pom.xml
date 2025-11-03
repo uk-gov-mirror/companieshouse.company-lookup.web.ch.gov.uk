@@ -32,7 +32,7 @@
     <opentelemetry-instrumentation-bom.version>2.14.0</opentelemetry-instrumentation-bom.version>
 
     <!-- Companies House -->
-    <api-sdk-manager-java-library.version>3.0.7</api-sdk-manager-java-library.version>
+    <api-sdk-manager-java-library.version>3.0.13</api-sdk-manager-java-library.version>
     <api-sdk-java.version>6.3.5</api-sdk-java.version>
     <structured-logging.version>3.0.43</structured-logging.version>
     <java-session-handler.version>4.1.11</java-session-handler.version>
@@ -41,7 +41,7 @@
     <web-security-java.version>3.1.10</web-security-java.version>
 
     <!-- Test -->
-    <jsoup.version>1.21.1</jsoup.version>
+    <jsoup.version>1.21.2</jsoup.version>
     <assertj-core.version>3.27.3</assertj-core.version>
     </properties>
 
@@ -200,6 +200,13 @@
         <artifactId>assertj-core</artifactId>
         <version>${assertj-core.version}</version>
         <scope>test</scope>
+    </dependency>
+
+    <!-- manual override of version from structured-logging (CVE-2025-48924) -->
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.19.0</version>
     </dependency>
   </dependencies>
 
