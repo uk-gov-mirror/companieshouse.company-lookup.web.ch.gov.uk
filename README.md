@@ -25,6 +25,17 @@ FORWARDING_URL         | The path the user will be forwarded to after the search
  | POST     | `/company-lookup/search`                                                | Company lookup page                                           |
  | GET      | `/company-lookup/no-number`                                             | Company lookup no company page                                |
 
+### Example of journey incorporating this service
+
+  | Method | Path                                                                                                                                                                             | Response                                                      |
+  | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+  | GET    | /efs-submission/start                                                                                                                                                            | 200 OK                                                        |
+  | GET    | /efs-submission/new-submission                                                                                                                                                   | 302 Found                                                     |
+  | GET    | /efs-submission/690b270a1356c02de11335e5/companyLookup?forward=%2Fefs-submission%2F690b270a1356c02de11335e5%2Fcompany%2F%7BcompanyNumber%7D%2Fdetails&userEmail=demo%40ch.gov.uk | 302 Found                                                     |
+  | GET    | /company-lookup/search?forward=%2Fefs-submission%2F690b270a1356c02de11335e5%2Fcompany%2F%7BcompanyNumber%7D%2Fdetails&userEmail=demo%40ch.gov.uk                                 | 200 OK                                                        |
+  | POST   | /company-lookup/search?forward=%2Fefs-submission%2F690b270a1356c02de11335e5%2Fcompany%2F%7BcompanyNumber%7D%2Fdetails&userEmail=demo%40ch.gov.uk                                 | 302 Found                                                     |
+  | GET    | /efs-submission/690b270a1356c02de11335e5/company/00006400/details                                                                                                                | 200 OK                                                        |
+
 ## Terraform ECS
 
 ### What does this code do?
