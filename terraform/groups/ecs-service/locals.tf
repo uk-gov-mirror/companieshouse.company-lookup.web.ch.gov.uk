@@ -8,7 +8,7 @@ locals {
   docker_repo                = "company-lookup.web.ch.gov.uk"
   kms_alias                  = "alias/${var.aws_profile}/environment-services-kms"
   lb_listener_rule_priority  = 53
-  lb_listener_paths          = ["/company-lookup/search","/company-lookup"]
+  lb_listener_paths          = ["/company-lookup/search","/company-lookup/no-number"]
   healthcheck_path           = "/company-lookup/healthcheck" #healthcheck path for company lookup web
   healthcheck_matcher        = "200"
   s3_config_bucket           = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
